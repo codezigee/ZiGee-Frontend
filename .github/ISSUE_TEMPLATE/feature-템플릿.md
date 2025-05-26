@@ -1,7 +1,7 @@
 ---
 name: Feature 템플릿
 about: 기능을 구현합니다.
-title: "[Feature] "
+title: "[Feat] "
 labels: Feature
 assignees: haxxxxi
 
