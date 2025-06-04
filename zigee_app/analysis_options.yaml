@@ -1,1 +1,40 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  plugins:
+    - dart_code_metrics
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  errors:
+    missing_required_param: error
+    unused_element: ignore
+    unused_import: ignore
+    unused_local_variable: ignore
+
+linter:
+  rules:
+    prefer_const_constructors: true
+    avoid_print: true
+    always_use_package_imports: true
+    sort_pub_dependencies: true
+    unnecessary_string_interpolations: false
+    unnecessary_brace_in_string_interps: false
+
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 20
+    lines-of-code: 100
+    number-of-parameters: 5
+    maximum-nesting-level: 5
+  rules:
+    - prefer-trailing-comma
+    - member-ordering
+    - avoid-long-functions
+    - avoid-nested-conditional-expressions
+  anti-patterns:
+    - long-method
+    - blob-class
+
+formatter:
+  page_width: 40
