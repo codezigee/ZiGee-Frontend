@@ -1,9 +1,10 @@
-# Miscellaneous
+# 1. Miscellaneous
 *.class
 *.log
 *.pyc
 *.swp
-.DS_Store
+*.tmp # 임시 파일 무시
+.DS_Store # macOS 시스템 파일
 .atom/
 .build/
 .buildlog/
@@ -12,18 +13,18 @@
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
+# 2. IDE 관련 파일 무시
+
+# 2-1. IntelliJ / Android Studio
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# 2-2. VS Code (협업 시 보통 무시)
+.vscode/ # 주석 해제
 
-# Flutter/Dart/Pub related
+# 3. Flutter / Dart / Pub 관련
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -31,15 +32,29 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+build/
+pubspec.lock # 앱 프로젝트에서는 보통 무시
 
-# Symbolication related
-app.*.symbols
+# 4. iOS 관련
+ios/Pods/ # CocoaPods 디렉토리
+ios/.symlinks/ # Flutter iOS 빌드시 생기는 심볼릭 링크
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Runner.xcworkspace/
+ios/DerivedData/
+ios/.generated/
 
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
+# 5. Android 관련
+android/.gradle/ # Gradle 캐시
+android/.idea/ # Android Studio 설정
+android/local.properties # 로컬 개발 설정 파일
+android/build/
+android/captures/
+android/app/*.iml
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# 5. 빌드 / 디버깅 관련
+app.*.symbols # Symbolication
+app.*.map.json # Obfuscation
