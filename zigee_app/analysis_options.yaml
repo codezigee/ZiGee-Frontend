@@ -35,6 +35,3 @@ dart_code_metrics:
   anti-patterns:
     - long-method
     - blob-class
-
-formatter:
-  page_width: 40
