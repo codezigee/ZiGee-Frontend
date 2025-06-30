@@ -28,13 +28,7 @@ class CustomCheckbox extends StatelessWidget {
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         if (label != null)
-          Text(
-            label!,
-            style: const TextStyle(
-              color: ColorTokens.textPrimary,
-              fontWeight: TypographyTokens.regular,
-            ),
-          ),
+          Text(label!, style: const TextStyle(color: ColorTokens.textPrimary)),
       ],
     );
   }
