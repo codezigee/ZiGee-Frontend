@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zigee_app/app/routes/app_pages.dart';
 import 'package:zigee_app/app/routes/app_routes.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 
@@ -9,15 +8,16 @@ class ZigeeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    // return GetMaterialApp(
+    return MaterialApp.router(
       title: 'zigee',
       // initialRoute: AppRoutes.main,
-      initialRoute: AppRoutes.initial,
+      // initialRoute: AppRoutes.initial,
+      routerConfig: goRouter,
       theme: ThemeData(
         fontFamily: 'Pretendard',
         scaffoldBackgroundColor: ColorTokens.backgroundPrimary,
         primaryColor: ColorTokens.gray900,
-
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
           primary: ColorTokens.gray900,
@@ -88,7 +88,7 @@ class ZigeeApp extends StatelessWidget {
           behavior: SnackBarBehavior.floating,
         ),
       ),
-      getPages: AppPages.pages,
+      // getPages: AppPages.pages,
       debugShowCheckedModeBanner: false,
     );
   }
