@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
+import 'package:zigee_app/app/theme/typography_tokens.dart';
 
 class CustomCheckbox extends StatelessWidget {
   final bool value;
@@ -27,7 +28,13 @@ class CustomCheckbox extends StatelessWidget {
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         if (label != null)
-          Text(label!, style: const TextStyle(color: ColorTokens.textPrimary)),
+          Text(
+            label!,
+            style: const TextStyle(
+              color: ColorTokens.textPrimary,
+              fontWeight: TypographyTokens.regular,
+            ),
+          ),
       ],
     );
   }

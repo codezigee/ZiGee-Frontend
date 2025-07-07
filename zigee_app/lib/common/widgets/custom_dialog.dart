@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/app/theme/typography_tokens.dart';
 import 'package:zigee_app/common/widgets/primary_text_button.dart';
+import 'package:zigee_app/app/theme/spacing_tokens.dart';
 
 class CustomDialog extends StatelessWidget {
   final String title;
@@ -56,22 +58,25 @@ class CustomDialog extends StatelessWidget {
               },
               content: '확인',
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: SpacingTokens.md),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: onCancel ?? () => Navigator.of(context).pop(),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.grey[800],
-                  side: BorderSide(color: Colors.grey[300]!),
+                  foregroundColor: ColorTokens.gray800,
+                  side: const BorderSide(color: ColorTokens.gray300),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(SizingTokens.radiusLg),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: SpacingTokens.md,
+                  ),
                 ),
                 child: Text(cancelText),
               ),
             ),
+            const SizedBox(height: SpacingTokens.sm),
           ],
         ),
       ),

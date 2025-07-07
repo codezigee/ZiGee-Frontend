@@ -26,8 +26,6 @@ class ZigeeApp extends StatelessWidget {
           onSecondary: ColorTokens.white,
           error: ColorTokens.red,
           onError: ColorTokens.white,
-          background: ColorTokens.backgroundPrimary,
-          onBackground: ColorTokens.textPrimary,
           surface: ColorTokens.backgroundSecondary,
           onSurface: ColorTokens.textPrimary,
         ),
@@ -40,19 +38,22 @@ class ZigeeApp extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: ColorTokens.borderPrimary),
+            borderSide: const BorderSide(color: ColorTokens.borderPrimary),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: ColorTokens.borderFocus, width: 2),
+            borderSide: const BorderSide(
+              color: ColorTokens.borderFocus,
+              width: 2,
+            ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: ColorTokens.borderError),
+            borderSide: const BorderSide(color: ColorTokens.borderError),
           ),
           disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: ColorTokens.borderSecondary),
+            borderSide: const BorderSide(color: ColorTokens.borderSecondary),
           ),
           hintStyle: const TextStyle(color: ColorTokens.textPlaceholder),
         ),
@@ -75,7 +76,6 @@ class ZigeeApp extends StatelessWidget {
         dividerColor: ColorTokens.borderPrimary,
         iconTheme: const IconThemeData(color: ColorTokens.gray700),
         disabledColor: ColorTokens.textDisabled,
-        dialogBackgroundColor: ColorTokens.backgroundElevated,
         cardColor: ColorTokens.backgroundSecondary,
         snackBarTheme: SnackBarThemeData(
           backgroundColor: Colors.white,
@@ -84,7 +84,7 @@ class ZigeeApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             side: BorderSide.none,
           ),
-          contentTextStyle: TextStyle(color: Colors.black),
+          contentTextStyle: const TextStyle(color: ColorTokens.black),
           behavior: SnackBarBehavior.floating,
         ),
       ),

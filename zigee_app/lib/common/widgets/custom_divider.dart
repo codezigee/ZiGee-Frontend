@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
+import 'package:zigee_app/app/theme/size_tokens.dart';
 
 class CustomDivider extends StatelessWidget {
   final Axis direction;
@@ -12,7 +13,7 @@ class CustomDivider extends StatelessWidget {
 
   const CustomDivider({
     this.direction = Axis.horizontal,
-    this.thickness = 1.0,
+    this.thickness = SizingTokens.dividerThickness,
     this.length = 0.0,
     this.indent = 0.0,
     this.endIndent = 0.0,

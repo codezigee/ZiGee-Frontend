@@ -24,7 +24,7 @@ class CustomSwitch extends StatelessWidget {
           activeColor: ColorTokens.gray900,
           inactiveThumbColor: ColorTokens.gray400,
           inactiveTrackColor: ColorTokens.gray200,
-          trackOutlineColor: MaterialStateProperty.all(
+          trackOutlineColor: const WidgetStatePropertyAll(
             ColorTokens.borderPrimary,
           ),
           splashRadius: 0,

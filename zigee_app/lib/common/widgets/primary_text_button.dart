@@ -30,7 +30,7 @@ class PrimaryTextButton extends StatelessWidget {
         }),
         foregroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
           if (states.contains(WidgetState.disabled)) {
-            return Colors.white70; // 비활성화 텍스트색
+            return ColorTokens.white.withAlpha(179); // 비활성화 텍스트색
           }
           return ColorTokens.white;
         }),

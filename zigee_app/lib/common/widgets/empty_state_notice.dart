@@ -3,6 +3,8 @@ import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/common/styles/text_styles.dart';
 import 'package:zigee_app/common/widgets/primary_text_button.dart';
 import 'package:zigee_app/common/widgets/secondary_text_button.dart';
+import 'package:zigee_app/app/theme/size_tokens.dart';
+import 'package:zigee_app/app/theme/spacing_tokens.dart';
 
 class EmptyStateNotice extends StatelessWidget {
   final String message;
@@ -24,17 +26,17 @@ class EmptyStateNotice extends StatelessWidget {
         children: [
           const Icon(
             Icons.list_alt_outlined,
-            size: 64,
+            size: SizingTokens.iconHuge,
             color: ColorTokens.textTertiary,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: SpacingTokens.sm),
           Text(
             message,
             style: AppTextStyles.bodyMedium,
             textAlign: TextAlign.center,
           ),
           if (buttonText != null && onButtonPressed != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: SpacingTokens.md),
             SecondaryTextButton(
               onPressed: onButtonPressed!,
               content: buttonText!,

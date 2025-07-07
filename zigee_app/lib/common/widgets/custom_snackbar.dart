@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
+import 'package:zigee_app/app/theme/typography_tokens.dart';
+import 'package:zigee_app/app/theme/size_tokens.dart';
 
 class CustomSnackbar {
   static void show(
@@ -16,7 +18,7 @@ class CustomSnackbar {
           title,
           style: TypographyStyles.bodyLarge.copyWith(
             color: ColorTokens.textOnDark,
-            fontWeight: FontWeight.bold,
+            fontWeight: TypographyTokens.bold,
           ),
         ),
         messageText: Text(
@@ -26,7 +28,7 @@ class CustomSnackbar {
           ),
         ),
         backgroundColor: ColorTokens.buttonPrimary,
-        borderRadius: 12,
+        borderRadius: SizingTokens.radiusLg,
         margin: const EdgeInsets.all(SpacingTokens.screenXs),
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 2),

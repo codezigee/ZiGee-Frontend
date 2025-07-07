@@ -4,6 +4,7 @@ import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/app/theme/typography_tokens.dart';
 import 'package:zigee_app/common/styles/text_styles.dart';
+import 'package:zigee_app/app/theme/spacing_tokens.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? labelText;
@@ -31,8 +32,8 @@ class CustomTextField extends StatelessWidget {
         labelStyle: TypographyStyles.bodyMedium,
         floatingLabelStyle: TypographyStyles.labelLarge,
         contentPadding: const EdgeInsets.symmetric(
-          vertical: 12,
-          horizontal: 16,
+          vertical: SpacingTokens.sm,
+          horizontal: SpacingTokens.md,
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
