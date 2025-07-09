@@ -30,10 +30,7 @@ class ErrorStateNotice extends StatelessWidget {
           ),
           if (buttonText != null && onRetry != null) ...[
             const SizedBox(height: 16),
-            CustomTextButton.secondary(
-              onPressed: onRetry!,
-              content: buttonText!,
-            ),
+            CustomTextButton.secondary(onPressed: onRetry!, label: buttonText!),
           ],
         ],
       ),

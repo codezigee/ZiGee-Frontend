@@ -5,26 +5,26 @@ import 'package:zigee_app/app/theme/color_tokens.dart';
 
 class CustomTextButton extends StatelessWidget {
   final VoidCallback? onPressed;
-  final String content;
+  final String label;
   final ButtonStyle style;
   final TextStyle? textStyle;
 
   const CustomTextButton._({
-    required this.onPressed,
-    required this.content,
+    this.onPressed,
+    required this.label,
     required this.style,
     this.textStyle,
     super.key,
   });
 
   factory CustomTextButton.primary({
-    required VoidCallback? onPressed,
-    required String content,
+    VoidCallback? onPressed,
+    required String label,
     Key? key,
   }) {
     return CustomTextButton._(
       onPressed: onPressed,
-      content: content,
+      label: label,
       style: AppButtonStyles.primary(),
       textStyle: TypographyStyles.bodyMedium.copyWith(color: ColorTokens.white),
       key: key,
@@ -32,13 +32,13 @@ class CustomTextButton extends StatelessWidget {
   }
 
   factory CustomTextButton.secondary({
-    required VoidCallback? onPressed,
-    required String content,
+    VoidCallback? onPressed,
+    required String label,
     Key? key,
   }) {
     return CustomTextButton._(
       onPressed: onPressed,
-      content: content,
+      label: label,
       style: AppButtonStyles.secondary(),
       textStyle: TypographyStyles.bodyMedium.copyWith(
         color: ColorTokens.textPrimary,
@@ -48,13 +48,13 @@ class CustomTextButton extends StatelessWidget {
   }
 
   factory CustomTextButton.tertiary({
-    required VoidCallback? onPressed,
-    required String content,
+    VoidCallback? onPressed,
+    required String label,
     Key? key,
   }) {
     return CustomTextButton._(
       onPressed: onPressed,
-      content: content,
+      label: label,
       style: AppButtonStyles.tertiary(),
       textStyle: TypographyStyles.bodyMedium.copyWith(
         color: ColorTokens.textTertiary,
@@ -64,13 +64,13 @@ class CustomTextButton extends StatelessWidget {
   }
 
   factory CustomTextButton.success({
-    required VoidCallback? onPressed,
-    required String content,
+    VoidCallback? onPressed,
+    required String label,
     Key? key,
   }) {
     return CustomTextButton._(
       onPressed: onPressed,
-      content: content,
+      label: label,
       style: AppButtonStyles.success(),
       textStyle: TypographyStyles.bodyMedium.copyWith(color: ColorTokens.white),
       key: key,
@@ -78,13 +78,13 @@ class CustomTextButton extends StatelessWidget {
   }
 
   factory CustomTextButton.destructive({
-    required VoidCallback? onPressed,
-    required String content,
+    VoidCallback? onPressed,
+    required String label,
     Key? key,
   }) {
     return CustomTextButton._(
       onPressed: onPressed,
-      content: content,
+      label: label,
       style: AppButtonStyles.destructive(),
       textStyle: TypographyStyles.bodyMedium.copyWith(color: ColorTokens.white),
       key: key,
@@ -96,7 +96,7 @@ class CustomTextButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: style,
-      child: Text(content, style: textStyle),
+      child: Text(label, style: textStyle),
     );
   }
 }

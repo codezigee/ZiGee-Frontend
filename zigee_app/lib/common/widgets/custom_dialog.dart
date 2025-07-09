@@ -56,7 +56,7 @@ class CustomDialog extends StatelessWidget {
               onPressed: () {
                 debugPrint('asdf');
               },
-              content: '확인',
+              label: '확인',
             ),
             const SizedBox(height: SpacingTokens.md),
             SizedBox(

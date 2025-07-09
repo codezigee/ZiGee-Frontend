@@ -38,7 +38,7 @@ class EmptyStateNotice extends StatelessWidget {
             const SizedBox(height: SpacingTokens.md),
             CustomTextButton.secondary(
               onPressed: onButtonPressed!,
-              content: buttonText!,
+              label: buttonText!,
             ),
           ],
         ],
