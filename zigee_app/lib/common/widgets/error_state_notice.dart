@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/common/styles/text_styles.dart';
-import 'package:zigee_app/common/widgets/secondary_text_button.dart';
+import 'package:zigee_app/common/widgets/custom_text_button.dart';
 
 class ErrorStateNotice extends StatelessWidget {
   final String message;
@@ -30,7 +30,10 @@ class ErrorStateNotice extends StatelessWidget {
           ),
           if (buttonText != null && onRetry != null) ...[
             const SizedBox(height: 16),
-            SecondaryTextButton(onPressed: onRetry!, content: buttonText!),
+            CustomTextButton.secondary(
+              onPressed: onRetry!,
+              content: buttonText!,
+            ),
           ],
         ],
       ),

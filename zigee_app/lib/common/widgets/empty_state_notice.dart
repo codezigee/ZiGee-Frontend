@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/common/styles/text_styles.dart';
-import 'package:zigee_app/common/widgets/primary_text_button.dart';
-import 'package:zigee_app/common/widgets/secondary_text_button.dart';
+import 'package:zigee_app/common/widgets/custom_text_button.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 
@@ -37,7 +36,7 @@ class EmptyStateNotice extends StatelessWidget {
           ),
           if (buttonText != null && onButtonPressed != null) ...[
             const SizedBox(height: SpacingTokens.md),
-            SecondaryTextButton(
+            CustomTextButton.secondary(
               onPressed: onButtonPressed!,
               content: buttonText!,
             ),

@@ -3,7 +3,7 @@ import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/app/theme/typography_tokens.dart';
-import 'package:zigee_app/common/widgets/primary_text_button.dart';
+import 'package:zigee_app/common/widgets/custom_text_button.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 
 class CustomDialog extends StatelessWidget {
@@ -52,7 +52,7 @@ class CustomDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            PrimaryTextButton(
+            CustomTextButton.primary(
               onPressed: () {
                 debugPrint('asdf');
               },
