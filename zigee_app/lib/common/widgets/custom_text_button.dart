@@ -26,9 +26,7 @@ class CustomTextButton extends StatelessWidget {
       onPressed: onPressed,
       content: content,
       style: AppButtonStyles.primary(),
-      textStyle: TypographyStyles.bodyMedium.copyWith(
-        color: ColorTokens.textOnDark,
-      ),
+      textStyle: TypographyStyles.bodyMedium.copyWith(color: ColorTokens.white),
       key: key,
     );
   }
@@ -43,8 +41,52 @@ class CustomTextButton extends StatelessWidget {
       content: content,
       style: AppButtonStyles.secondary(),
       textStyle: TypographyStyles.bodyMedium.copyWith(
+        color: ColorTokens.textPrimary,
+      ),
+      key: key,
+    );
+  }
+
+  factory CustomTextButton.tertiary({
+    required VoidCallback? onPressed,
+    required String content,
+    Key? key,
+  }) {
+    return CustomTextButton._(
+      onPressed: onPressed,
+      content: content,
+      style: AppButtonStyles.tertiary(),
+      textStyle: TypographyStyles.bodyMedium.copyWith(
         color: ColorTokens.textTertiary,
       ),
+      key: key,
+    );
+  }
+
+  factory CustomTextButton.success({
+    required VoidCallback? onPressed,
+    required String content,
+    Key? key,
+  }) {
+    return CustomTextButton._(
+      onPressed: onPressed,
+      content: content,
+      style: AppButtonStyles.success(),
+      textStyle: TypographyStyles.bodyMedium.copyWith(color: ColorTokens.white),
+      key: key,
+    );
+  }
+
+  factory CustomTextButton.destructive({
+    required VoidCallback? onPressed,
+    required String content,
+    Key? key,
+  }) {
+    return CustomTextButton._(
+      onPressed: onPressed,
+      content: content,
+      style: AppButtonStyles.destructive(),
+      textStyle: TypographyStyles.bodyMedium.copyWith(color: ColorTokens.white),
       key: key,
     );
   }
