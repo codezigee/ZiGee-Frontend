@@ -11,6 +11,7 @@ class CustomSnackbar {
     BuildContext context, {
     required String title,
     required String message,
+    Duration duration = const Duration(seconds: 2),
   }) {
     Get.showSnackbar(
       GetSnackBar(
@@ -31,7 +32,7 @@ class CustomSnackbar {
         borderRadius: SizingTokens.radiusLg,
         margin: const EdgeInsets.all(SpacingTokens.screenXs),
         snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 2),
+        duration: duration,
       ),
     );
   }
