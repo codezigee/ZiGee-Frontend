@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
+import 'package:zigee_app/app/theme/typography_tokens.dart';
 
 class CustomCheckbox extends StatelessWidget {
   final bool value;

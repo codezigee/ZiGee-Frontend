@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/common/styles/text_styles.dart';
+import 'package:zigee_app/app/theme/spacing_tokens.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
   final String? label;
@@ -26,10 +27,10 @@ class CustomDropdownButton<T> extends StatelessWidget {
       children: [
         if (label != null) ...[
           Text(label!, style: AppTextStyles.bodySmall),
-          const SizedBox(height: 8),
+          const SizedBox(height: SpacingTokens.sm),
         ],
         DropdownMenu<T>(
-          width: MediaQuery.of(context).size.width - 48,
+          width: MediaQuery.of(context).size.width - SpacingTokens.xl,
           initialSelection: value,
           onSelected: onChanged,
           dropdownMenuEntries:
