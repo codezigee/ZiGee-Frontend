@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
+import 'package:zigee_app/common/styles/button_styles.dart';
 import 'package:zigee_app/common/styles/text_styles.dart';
 import 'package:zigee_app/features/auth/widgets/social_login_button.dart';
 
@@ -64,11 +65,12 @@ class LoginScreen extends StatelessWidget {
                     SocialLoginButton(
                       text: 'Apple 로그인',
                       assetPath: 'assets/images/apple_logo.png',
-                      backgroundColor: const Color(0xFFF2F2F2),
+                      backgroundColor: Colors.white,
                       onPressed: () => debugPrint('애플 로그인'),
                       textStyle: AppTextStyles.labelLarge.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
+                      buttonStyle: AppButtonStyles.secondary(),
                     ),
                   ],
                 ),

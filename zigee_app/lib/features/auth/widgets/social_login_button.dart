@@ -11,6 +11,7 @@ class SocialLoginButton extends StatelessWidget {
   final Color backgroundColor;
   final VoidCallback onPressed;
   final TextStyle textStyle;
+  final ButtonStyle? buttonStyle;
 
   const SocialLoginButton({
     required this.text,
@@ -18,6 +19,7 @@ class SocialLoginButton extends StatelessWidget {
     required this.backgroundColor,
     required this.onPressed,
     required this.textStyle,
+    this.buttonStyle,
     super.key,
   });
 
@@ -25,9 +27,11 @@ class SocialLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: AppButtonStyles.primary().copyWith(
-        backgroundColor: WidgetStatePropertyAll(backgroundColor),
-      ),
+      style:
+          buttonStyle ??
+          AppButtonStyles.primary().copyWith(
+            backgroundColor: WidgetStatePropertyAll(backgroundColor),
+          ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
