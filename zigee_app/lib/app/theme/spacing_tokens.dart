@@ -16,7 +16,7 @@ class SpacingTokens {
   static const double buttonHorizontal = 24.0; // 버튼 내부 가로 여백
   static const double buttonVertical = 16.0; // 버튼 내부 가로 여백
 
-  static const double componentXs = 4.0; // 버튼 내부 여백
+  static const double componentXs = 8.0; // 버튼 내부 여백
   static const double componentSm = 8.0; // 카드 내부 여백
   static const double componentMd = 16.0; // 모달 내부 여백
   static const double componentLg = 24.0; // 페이지 내부 여백
