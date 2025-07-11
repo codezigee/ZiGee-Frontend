@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zigee_app/app/theme/color_tokens.dart';
-import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
-import 'package:zigee_app/common/styles/button_styles.dart';
 import 'package:zigee_app/common/styles/text_styles.dart';
+import 'package:zigee_app/features/auth/widgets/social_login_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -37,106 +35,39 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // 1. 카카오 로그인
-                    ElevatedButton(
+                    SocialLoginButton(
+                      text: '카카오 로그인',
+                      assetPath: 'assets/images/kakao_logo.png',
+                      backgroundColor: const Color(0xFFFEE500),
                       onPressed: () => debugPrint('카카오 로그인'),
-                      // style: ButtonStyle(
-                      //   textStyle: WidgetStatePropertyAll(AppTextStyles.labelLarge),
-                      //   backgroundColor: const WidgetStatePropertyAll(
-                      //     Color(0xFFFEE500),
-                      //   ),
-                      //   overlayColor: const WidgetStatePropertyAll(
-                      //     Colors.transparent,
-                      //   ),
-                      //   elevation: const WidgetStatePropertyAll(0),
-                      //   shape: WidgetStatePropertyAll(
-                      //     RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(
-                      //         SizingTokens.radiusMd,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      style: AppButtonStyles.primary().copyWith(
-                        backgroundColor: const WidgetStatePropertyAll(
-                          Color(0xFFFEE500),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            'assets/images/kakao_logo.png',
-                            width: SizingTokens.buttonIconSize,
-                            height: SizingTokens.buttonIconSize,
-                            fit: BoxFit.contain,
-                          ),
-                          const Spacer(),
-                          Text(
-                            '카카오 로그인',
-                            style: AppTextStyles.labelLarge.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
+                      textStyle: AppTextStyles.labelLarge.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
 
                     const SizedBox(height: SpacingTokens.layoutXs),
 
                     // 2. 구글 로그인
-                    ElevatedButton(
+                    SocialLoginButton(
+                      text: 'Google 로그인',
+                      assetPath: 'assets/images/google_logo.png',
+                      backgroundColor: const Color(0xFFF2F2F2),
                       onPressed: () => debugPrint('구글 로그인'),
-                      style: AppButtonStyles.primary().copyWith(
-                        backgroundColor: const WidgetStatePropertyAll(
-                          Color(0xFFF2F2F2),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            'assets/images/google_logo.png',
-                            width: SizingTokens.buttonIconSize,
-                            height: SizingTokens.buttonIconSize,
-                            fit: BoxFit.contain,
-                          ),
-                          const Spacer(),
-                          Text(
-                            'Google 로그인',
-                            style: AppTextStyles.labelLarge.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
+                      textStyle: AppTextStyles.labelLarge.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
 
                     const SizedBox(height: SpacingTokens.layoutXs),
 
                     // 3. 애플 로그인
-                    ElevatedButton(
+                    SocialLoginButton(
+                      text: 'Apple 로그인',
+                      assetPath: 'assets/images/apple_logo.png',
+                      backgroundColor: const Color(0xFFF2F2F2),
                       onPressed: () => debugPrint('애플 로그인'),
-                      style: AppButtonStyles.secondary(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            'assets/images/apple_logo.png',
-                            width: SizingTokens.buttonIconSize,
-                            height: SizingTokens.buttonIconSize,
-                            fit: BoxFit.contain,
-                          ),
-                          const Spacer(),
-                          Text(
-                            'Apple 로그인',
-                            style: AppTextStyles.labelLarge.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
+                      textStyle: AppTextStyles.labelLarge.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
