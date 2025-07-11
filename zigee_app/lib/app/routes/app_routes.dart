@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
+import 'package:zigee_app/features/auth/login_screen.dart';
 import 'package:zigee_app/features/booking/booking_screen.dart';
 import 'package:zigee_app/features/my_booking/my_booking_screen.dart';
 import 'package:zigee_app/features/settings/setting_screen.dart';
 
 abstract class AppRoutes {
   static const initial = '/login';
-  static const main = '/main';
   static const booking = '/booking';
   static const myBooking = '/my-booking';
   static const home = '/my-booking';
@@ -24,8 +24,13 @@ class AppRouter {
 }
 
 final goRouter = GoRouter(
-  initialLocation: AppRoutes.home,
+  // initialLocation: AppRoutes.home,
+  initialLocation: AppRoutes.initial,
   routes: [
+    GoRoute(
+      path: AppRoutes.initial,
+      builder: (context, state) => const LoginScreen(),
+    ),
     StatefulShellRoute.indexedStack(
       branches: [
         StatefulShellBranch(
