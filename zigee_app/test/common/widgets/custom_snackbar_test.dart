@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:zigee_app/common/widgets/custom_snackbar.dart';
 
 void main() {
   testWidgets('CustomSnackbar.show가 호출된다.', (tester) async {
     await tester.pumpWidget(
-      GetMaterialApp(
+      MaterialApp(
         home: Builder(
           builder:
               (context) => Scaffold(
