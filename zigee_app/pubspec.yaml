@@ -47,4 +47,3 @@ flutter:
           weight: 900
   assets:
     - assets/images/
-    - assets/config/.env
