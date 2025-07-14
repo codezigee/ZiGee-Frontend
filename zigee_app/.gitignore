@@ -34,7 +34,8 @@ migrate_working_dir/
 .pub/
 build/
 pubspec.lock # 앱 프로젝트에서는 보통 무시
-assets/config/.env # dotenv
+.env
+zigee_app/lib/app/config/env.g.dart
 
 # 4. iOS 관련
 ios/Pods/ # CocoaPods 디렉토리
