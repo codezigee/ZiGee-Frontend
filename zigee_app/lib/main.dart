@@ -7,15 +7,9 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   KakaoSdk.init(
-    nativeAppKey: '65649053097626958171b85d2ad5251e',
+    nativeAppKey: 'dfa6adb877d20a9dfe8ed06a1769d636',
     javaScriptAppKey: Env.kakaoJavascriptKey,
   );
 
-  initialize();
-
   runApp(const ZigeeApp());
-}
-
-void initialize() async {
-  final result = await UserApi.instance.loginWithKakaoAccount();
 }
