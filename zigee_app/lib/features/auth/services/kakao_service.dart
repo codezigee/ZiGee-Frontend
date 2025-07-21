@@ -1,49 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:zigee_app/features/auth/models/auth_result.dart';
 
 class KakaoService {
-  Future<void> loginWithKakaoTalk() async {
+  Future<AuthResult> loginWithKakaoTalk() async {
     try {
       OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-
       debugPrint('[카카오톡으로 로그인 성공]');
+      return AuthSuccess(token);
     } catch (error) {
       debugPrint('[카카오톡으로 로그인 실패]');
-      debugPrint('[$error');
 
-      // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
-      // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
-      if (error is PlatformException && error.code == 'CANCELED') {
-        return;
+      if (error is PlatformException) {
+        switch (error.code) {
+          case 'CANCELED':
+            return AuthCancelled();
+          case 'NOT_INSTALLED':
+            return AuthFailure(AuthError.notInstalled(error.message));
+          case 'NETWORK_ERROR':
+            return AuthFailure(AuthError.networkError(error.message));
+          case 'TOKEN_EXPIRED':
+            return AuthFailure(AuthError.tokenExpired(error.message));
+          case 'PERMISSION_DENIED':
+            return AuthFailure(AuthError.permissionDenied(error.message));
+          default:
+            break;
+        }
       }
-
-      await loginWithKakaoAccount();
+      return AuthFailure(AuthError.unknown(error.toString()));
     }
   }
 
-  Future<void> loginWithKakaoAccount() async {
+  Future<AuthResult> loginWithKakaoAccount() async {
     try {
       OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
       debugPrint('[카카오 계정으로 로그인 성공]');
+      return AuthSuccess(token);
     } catch (error) {
       debugPrint('[카카오 계정으로 로그인 실패]');
-      debugPrint('$error');
+
+      if (error is PlatformException) {
+        switch (error.code) {
+          case 'CANCELED':
+            return AuthCancelled();
+          case 'NETWORK_ERROR':
+            return AuthFailure(AuthError.networkError(error.message));
+          case 'TOKEN_EXPIRED':
+            return AuthFailure(AuthError.tokenExpired(error.message));
+          case 'PERMISSION_DENIED':
+            return AuthFailure(AuthError.permissionDenied(error.message));
+          default:
+            break;
+        }
+      }
+      return AuthFailure(AuthError.unknown(error.toString()));
     }
   }
 
-  Future<void> signInWithKakao() async {
+  Future<AuthResult> signInWithKakao() async {
     try {
       final isKakaoTalkAvailable = await isKakaoTalkInstalled();
-
       if (isKakaoTalkAvailable) {
-        await loginWithKakaoTalk();
+        return await loginWithKakaoTalk();
       } else {
-        await loginWithKakaoAccount();
+        return await loginWithKakaoAccount();
       }
     } catch (error) {
       debugPrint('[카카오 로그인 실패]');
       debugPrint('$error');
+      return AuthFailure(AuthError.unknown(error.toString()));
     }
   }
 }
