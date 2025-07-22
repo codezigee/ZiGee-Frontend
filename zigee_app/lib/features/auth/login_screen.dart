@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
+import 'package:zigee_app/app/routes/app_routes.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/common/styles/button_styles.dart';
 import 'package:zigee_app/common/styles/text_styles.dart';
+import 'package:zigee_app/common/widgets/custom_snackbar.dart';
+import 'package:zigee_app/features/auth/models/auth_result.dart';
 import 'package:zigee_app/features/auth/services/kakao_service.dart';
 import 'package:zigee_app/features/auth/widgets/social_login_button.dart';
 
@@ -44,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                       assetPath: 'assets/images/kakao_logo.png',
                       backgroundColor: const Color(0xFFFEE500),
                       onPressed: () async {
-                        await KakaoService().signInWithKakao();
+                        _handleKakaoLogin(context);
                       },
                       textStyle: AppTextStyles.labelLarge.copyWith(
                         fontWeight: FontWeight.bold,
@@ -85,5 +89,28 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _handleKakaoLogin(BuildContext context) async {
+    final authResult = await KakaoService().signInWithKakao();
+
+    switch (authResult) {
+      case AuthSuccess():
+        if (context.mounted) {
+          context.push(AppRoutes.myBooking);
+        }
+      case AuthFailure(error: final authError):
+        if (context.mounted) {
+          CustomSnackbar.show(
+            context,
+            title: authError.type.displayName,
+            message: authError.message,
+          );
+        }
+      case AuthCancelled():
+        if (context.mounted) {
+          CustomSnackbar.show(context, title: '오류가 발생했습니다.', message: '내용');
+        }
+    }
   }
 }
