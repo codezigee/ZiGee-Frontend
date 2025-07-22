@@ -24,12 +24,15 @@ class AuthCancelled extends AuthResult {
 }
 
 enum AuthErrorType {
-  networkError,
-  serverError,
-  permissionDenied,
-  tokenExpired,
-  notInstalled,
-  unknown,
+  networkError('네트워크 오류'),
+  serverError('서버 오류'),
+  permissionDenied('권한 거부'),
+  tokenExpired('토큰 만료'),
+  notInstalled('미설치'),
+  unknown('알 수 없는 오류');
+
+  const AuthErrorType(this.displayName);
+  final String displayName;
 }
 
 class AuthError {
