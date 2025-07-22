@@ -1,18 +1,27 @@
+import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 sealed class AuthResult {}
 
 class AuthSuccess extends AuthResult {
   final OAuthToken token;
-  AuthSuccess(this.token);
+  AuthSuccess(this.token) {
+    debugPrint('[로그인 성공]');
+  }
 }
 
 class AuthFailure extends AuthResult {
   final AuthError error;
-  AuthFailure(this.error);
+  AuthFailure(this.error) {
+    debugPrint('[로그인 실패] ${error.message}');
+  }
 }
 
-class AuthCancelled extends AuthResult {}
+class AuthCancelled extends AuthResult {
+  AuthCancelled() {
+    debugPrint('[로그인 취소]');
+  }
+}
 
 enum AuthErrorType {
   networkError,

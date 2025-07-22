@@ -7,11 +7,8 @@ class KakaoService {
   Future<AuthResult> loginWithKakaoTalk() async {
     try {
       OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-      debugPrint('[카카오톡으로 로그인 성공]');
       return AuthSuccess(token);
     } catch (error) {
-      debugPrint('[카카오톡으로 로그인 실패]');
-
       if (error is PlatformException) {
         switch (error.code) {
           case 'CANCELED':
@@ -35,11 +32,8 @@ class KakaoService {
   Future<AuthResult> loginWithKakaoAccount() async {
     try {
       OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-      debugPrint('[카카오 계정으로 로그인 성공]');
       return AuthSuccess(token);
     } catch (error) {
-      debugPrint('[카카오 계정으로 로그인 실패]');
-
       if (error is PlatformException) {
         switch (error.code) {
           case 'CANCELED':
@@ -67,8 +61,6 @@ class KakaoService {
         return await loginWithKakaoAccount();
       }
     } catch (error) {
-      debugPrint('[카카오 로그인 실패]');
-      debugPrint('$error');
       return AuthFailure(AuthError.unknown(error.toString()));
     }
   }
