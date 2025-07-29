@@ -241,6 +241,18 @@ class _BookingScreenState extends State<BookingScreen> {
                           );
                     }).toList(),
               ),
+              const SizedBox(height: SpacingTokens.md),
+
+              selectedDate != null &&
+                      selectedStartTime != null &&
+                      selectedDurationMinutes != null
+                  ? CustomTextButton.primary(
+                    label: '조회',
+                    onPressed: () {
+                      debugPrint('Clicked 조회 Button');
+                    },
+                  )
+                  : CustomTextButton.destructive(label: '조회'),
             ],
           ),
         ),
