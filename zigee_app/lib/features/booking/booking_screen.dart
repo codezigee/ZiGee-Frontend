@@ -108,9 +108,12 @@ class _BookingScreenState extends State<BookingScreen> {
             vertical: SpacingTokens.md,
             horizontal: SpacingTokens.lg,
           ),
+          physics: const ClampingScrollPhysics(),
+
           controller: scrollController,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: SpacingTokens.sm,
             children: [
               /// 1. 날짜 선택
               Text(
@@ -132,7 +135,8 @@ class _BookingScreenState extends State<BookingScreen> {
                       selectedDate = selectedDay;
                       focusedDate = focusedDay;
                     });
-                    _searchAvailableRooms();
+
+                    debugPrint('onDaySelected: $selectedDate');
                   }
                 },
                 onPageChanged: (focusedDay) {
@@ -165,6 +169,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   headerPadding: EdgeInsets.zero,
                 ),
               ),
+              const SizedBox(height: SpacingTokens.md),
 
               /// 2. 시간 선택
               Text(
@@ -185,7 +190,8 @@ class _BookingScreenState extends State<BookingScreen> {
                         setState(() {
                           selectedStartTime = time;
                         });
-                        _searchAvailableRooms();
+
+                        debugPrint('onStartTimeSelected: $selectedStartTime');
                       }
 
                       return isSelected
@@ -199,6 +205,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           );
                     }).toList(),
               ),
+              const SizedBox(height: SpacingTokens.md),
 
               /// 3. 시간 선택
               Text(
@@ -227,7 +234,10 @@ class _BookingScreenState extends State<BookingScreen> {
                         setState(() {
                           selectedDurationMinutes = duration;
                         });
-                        _searchAvailableRooms();
+
+                        debugPrint(
+                          'onDurationSelected: ${selectedDurationMinutes}',
+                        );
                       }
 
                       return isSelected
