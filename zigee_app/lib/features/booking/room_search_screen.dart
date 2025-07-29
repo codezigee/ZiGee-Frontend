@@ -8,6 +8,8 @@ import 'package:zigee_app/common/widgets/custom_date_picker.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
 import 'package:zigee_app/features/booking/widgets/available_rooms_list.dart';
 import 'package:zigee_app/models/room.dart';
+import 'package:zigee_app/app/routes/app_routes.dart';
+import 'package:go_router/go_router.dart';
 
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
@@ -27,14 +29,14 @@ enum TimePeriod {
   }
 }
 
-class BookingScreen extends StatefulWidget {
-  const BookingScreen({super.key});
+class RoomSearchScreen extends StatefulWidget {
+  const RoomSearchScreen({super.key});
 
   @override
-  State<BookingScreen> createState() => _BookingScreenState();
+  State<RoomSearchScreen> createState() => _RoomSearchScreenState();
 }
 
-class _BookingScreenState extends State<BookingScreen> {
+class _RoomSearchScreenState extends State<RoomSearchScreen> {
   DateTime focusedDate = DateTime.now();
   DateTime? selectedDate = DateTime.now();
   TimeOfDay? selectedStartTime;
@@ -259,7 +261,14 @@ class _BookingScreenState extends State<BookingScreen> {
                   ? CustomTextButton.primary(
                     label: '조회',
                     onPressed: () {
-                      debugPrint('Clicked 조회 Button');
+                      context.push(
+                        AppRoutes.roomList,
+                        extra: {
+                          'selectedDate': selectedDate,
+                          'selectedStartTime': selectedStartTime,
+                          'selectedDurationMinutes': selectedDurationMinutes,
+                        },
+                      );
                     },
                   )
                   : CustomTextButton.destructive(label: '조회'),
