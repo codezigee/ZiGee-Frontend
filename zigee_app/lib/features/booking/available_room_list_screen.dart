@@ -28,7 +28,7 @@ class AvailableRoomListScreen extends StatefulWidget {
 }
 
 class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
-  String? _selectedRoomId = null;
+  Room? _selectedRoom;
 
   String _formatTime(TimeOfDay time) {
     return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
@@ -266,20 +266,20 @@ class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
         borderRadius: BorderRadius.circular(SizingTokens.radiusMd),
         border: Border.all(
           color:
-              _selectedRoomId == room.id
+              _selectedRoom == room
                   ? ColorTokens.borderFocus
                   : ColorTokens.borderPrimary,
         ),
       ),
       child: InkWell(
         onTap: () {
-          if (_selectedRoomId != room.id) {
+          if (_selectedRoom != room) {
             setState(() {
-              _selectedRoomId = room.id;
+              _selectedRoom = room;
             });
           } else {
             setState(() {
-              _selectedRoomId = null;
+              _selectedRoom = null;
             });
           }
         },

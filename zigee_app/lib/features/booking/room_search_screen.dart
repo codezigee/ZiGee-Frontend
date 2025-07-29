@@ -6,7 +6,6 @@ import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/common/widgets/custom_date_picker.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
-import 'package:zigee_app/features/booking/widgets/available_rooms_list.dart';
 import 'package:zigee_app/models/room.dart';
 import 'package:zigee_app/app/routes/app_routes.dart';
 import 'package:go_router/go_router.dart';

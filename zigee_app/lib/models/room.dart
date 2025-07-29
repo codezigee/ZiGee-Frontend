@@ -48,4 +48,12 @@ class Room {
       'updated_at': updatedAt.toIso8601String(),
     };
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is Room && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }
