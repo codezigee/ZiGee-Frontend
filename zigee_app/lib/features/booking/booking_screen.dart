@@ -39,8 +39,6 @@ class _BookingScreenState extends State<BookingScreen> {
   DateTime? selectedDate = DateTime.now();
   TimeOfDay? selectedStartTime;
   int? selectedDurationMinutes;
-  Room? selectedRoom;
-  List<Room> availableRooms = [];
 
   List<Room> get _sampleRooms => [
     Room(
@@ -75,21 +73,6 @@ class _BookingScreenState extends State<BookingScreen> {
     ),
   ];
 
-  void _searchAvailableRooms() {
-    if (selectedDate != null &&
-        selectedStartTime != null &&
-        selectedDurationMinutes != null) {
-      setState(() {
-        availableRooms = _sampleRooms;
-      });
-    } else {
-      setState(() {
-        availableRooms = [];
-        selectedRoom = null;
-      });
-    }
-  }
-
   List<TimeOfDay> get _availableStartTimes {
     final times = <TimeOfDay>[];
     for (int hour = 9; hour <= 22; hour++) {
@@ -114,15 +97,6 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
     final scrollController = ScrollController();
-
-    final focusedYear = '${focusedDate.year}년';
-    final focusedMonth = '${focusedDate.month}월';
-    final focusedDay = '${focusedDate.day}일';
-    final focusedTimePeriod = TimePeriod.am;
-    final focusedStartHour = '0';
-    final focusedStartMinute = '0';
-    final focusedEndHour = '00';
-    final focusedEndMinute = '00';
 
     return Scaffold(
       appBar: const CupertinoNavigationBar(
