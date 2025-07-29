@@ -102,7 +102,7 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
 
     return Scaffold(
       appBar: const CupertinoNavigationBar(
-        leading: Text('예약하기', style: TypographyStyles.titleLarge),
+        middle: Text('회의실 조회', style: TypographyStyles.titleLarge),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -259,7 +259,7 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                       selectedStartTime != null &&
                       selectedDurationMinutes != null
                   ? CustomTextButton.primary(
-                    label: '조회',
+                    label: '조회하기',
                     onPressed: () {
                       context.push(
                         AppRoutes.roomList,
@@ -271,7 +271,7 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                       );
                     },
                   )
-                  : CustomTextButton.destructive(label: '조회'),
+                  : CustomTextButton.destructive(label: '조회하기'),
             ],
           ),
         ),
