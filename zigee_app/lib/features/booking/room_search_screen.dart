@@ -84,6 +84,8 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
 
               /// 3. 시간 선택
               UseTimeSelector(
+                selectedDurationMinutes: selectedDurationMinutes,
+                selectedStartTime: selectedStartTime,
                 onDurationSelected: (duration) {
                   setState(() {
                     selectedDurationMinutes = duration;
