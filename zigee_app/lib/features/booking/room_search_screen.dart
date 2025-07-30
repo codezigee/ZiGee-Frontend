@@ -14,20 +14,6 @@ final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
-enum TimePeriod {
-  am,
-  pm;
-
-  String displayName() {
-    switch (this) {
-      case TimePeriod.am:
-        return '오전';
-      case TimePeriod.pm:
-        return '오후';
-    }
-  }
-}
-
 class RoomSearchScreen extends StatefulWidget {
   const RoomSearchScreen({super.key});
 
@@ -40,39 +26,6 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
   DateTime? selectedDate = DateTime.now();
   TimeOfDay? selectedStartTime;
   int? selectedDurationMinutes;
-
-  List<Room> get _sampleRooms => [
-    Room(
-      id: '1',
-      name: '회의실 A',
-      capacity: 8,
-      location: '2층',
-      description: '프로젝터, 화이트보드 구비',
-      isAvailable: true,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-    Room(
-      id: '2',
-      name: '회의실 B',
-      capacity: 12,
-      location: '3층',
-      description: '대형 회의실, 화상회의 시설 완비',
-      isAvailable: true,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-    Room(
-      id: '3',
-      name: '소회의실 C',
-      capacity: 4,
-      location: '2층',
-      description: '소규모 미팅용',
-      isAvailable: true,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-  ];
 
   List<TimeOfDay> get _availableStartTimes {
     final times = <TimeOfDay>[];
