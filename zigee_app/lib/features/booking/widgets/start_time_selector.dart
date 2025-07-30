@@ -18,6 +18,7 @@ class StartTimeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: SpacingTokens.sm,
       children: [
         Text(
           '시작 시간을 선택하세요.',

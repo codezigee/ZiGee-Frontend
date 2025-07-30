@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
+import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
 
 final kToday = DateTime.now();
@@ -25,6 +26,7 @@ class DaySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: SpacingTokens.sm,
       children: [
         Text(
           '날짜를 선택하세요.',

@@ -47,11 +47,10 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
             horizontal: SpacingTokens.lg,
           ),
           physics: const ClampingScrollPhysics(),
-
           controller: scrollController,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: SpacingTokens.sm,
+            spacing: SpacingTokens.md,
             children: [
               /// 1. 날짜 선택
               DaySelector(
@@ -71,7 +70,6 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                   focusedDay = focusedDay;
                 },
               ),
-              const SizedBox(height: SpacingTokens.md),
 
               /// 2. 시간 선택
               StartTimeSelector(

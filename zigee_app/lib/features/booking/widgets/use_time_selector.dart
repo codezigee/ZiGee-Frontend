@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/common/utils/time_utils.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
@@ -19,6 +20,7 @@ class UseTimeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: SpacingTokens.sm,
       children: [
         Text(
           '이용 시간을 선택하세요.',
