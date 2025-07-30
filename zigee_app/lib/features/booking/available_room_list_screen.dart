@@ -9,6 +9,7 @@ import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/common/widgets/custom_dialog.dart';
 import 'package:zigee_app/common/widgets/custom_snackbar.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
+import 'package:zigee_app/features/booking/widgets/room_card.dart';
 import 'package:zigee_app/models/room.dart';
 
 class AvailableRoomListScreen extends StatefulWidget {
@@ -137,7 +138,23 @@ class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
                             padding: const EdgeInsets.symmetric(
                               vertical: SpacingTokens.sm,
                             ),
-                            child: _buildRoomCard(context, room),
+                            child: RoomCard(
+                              room: room,
+                              isSelected: _selectedRoom == room,
+                              onTap: () {
+                                () {
+                                  if (_selectedRoom != room) {
+                                    setState(() {
+                                      _selectedRoom = room;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      _selectedRoom = null;
+                                    });
+                                  }
+                                };
+                              },
+                            ),
                           );
                         },
                       ),
@@ -207,112 +224,28 @@ class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
                   padding: const EdgeInsets.symmetric(
                     vertical: SpacingTokens.sm,
                   ),
-                  child: _buildRoomCard(context, room),
+                  child: RoomCard(
+                    room: room,
+                    isSelected: _selectedRoom == room,
+                    onTap: () {
+                      () {
+                        if (_selectedRoom != room) {
+                          setState(() {
+                            _selectedRoom = room;
+                          });
+                        } else {
+                          setState(() {
+                            _selectedRoom = null;
+                          });
+                        }
+                      };
+                    },
+                  ),
                 );
               },
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildRoomCard(BuildContext context, Room room) {
-    return Container(
-      decoration: BoxDecoration(
-        color: ColorTokens.white,
-        borderRadius: BorderRadius.circular(SizingTokens.radiusMd),
-        border: Border.all(
-          color:
-              _selectedRoom == room
-                  ? ColorTokens.borderFocus
-                  : ColorTokens.borderPrimary,
-        ),
-      ),
-      child: InkWell(
-        onTap: () {
-          if (_selectedRoom != room) {
-            setState(() {
-              _selectedRoom = room;
-            });
-          } else {
-            setState(() {
-              _selectedRoom = null;
-            });
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(SpacingTokens.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          room.name,
-                          style: TypographyStyles.titleMedium.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: SpacingTokens.xs),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_on,
-                              size: 14,
-                              color: ColorTokens.gray600,
-                            ),
-                            const SizedBox(width: SpacingTokens.xs),
-                            Text(
-                              room.location,
-                              style: TypographyStyles.bodySmall.copyWith(
-                                color: ColorTokens.gray600,
-                              ),
-                            ),
-                            const SizedBox(width: SpacingTokens.sm),
-                            const Icon(
-                              Icons.people,
-                              size: 14,
-                              color: ColorTokens.gray600,
-                            ),
-                            const SizedBox(width: SpacingTokens.xs),
-                            Text(
-                              '${room.capacity}명',
-                              style: TypographyStyles.bodySmall.copyWith(
-                                color: ColorTokens.gray600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: SpacingTokens.sm,
-                      vertical: SpacingTokens.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      color: ColorTokens.statusSuccess.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      '예약 가능',
-                      style: TypographyStyles.bodySmall.copyWith(
-                        color: ColorTokens.statusSuccess,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
