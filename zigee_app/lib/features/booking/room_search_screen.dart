@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
+import 'package:zigee_app/common/utils/time_utils.dart';
 import 'package:zigee_app/common/widgets/custom_date_picker.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
 import 'package:zigee_app/models/room.dart';
@@ -26,26 +27,6 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
   DateTime? selectedDate = DateTime.now();
   TimeOfDay? selectedStartTime;
   int? selectedDurationMinutes;
-
-  List<TimeOfDay> get _availableStartTimes {
-    final times = <TimeOfDay>[];
-    for (int hour = 9; hour <= 22; hour++) {
-      times.add(TimeOfDay(hour: hour, minute: 0));
-    }
-    return times;
-  }
-
-  String _formatTime(TimeOfDay time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-  }
-
-  TimeOfDay _calculateEndTime(TimeOfDay startTime, int durationMinutes) {
-    final startMinutes = startTime.hour * 60 + startTime.minute;
-    final endMinutes = startMinutes + durationMinutes;
-    final endHour = (endMinutes ~/ 60) % 24;
-    final endMinute = endMinutes % 60;
-    return TimeOfDay(hour: endHour, minute: endMinute);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,9 +117,9 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                 spacing: SpacingTokens.sm,
                 runSpacing: SpacingTokens.sm,
                 children:
-                    _availableStartTimes.map((time) {
+                    TimeUtils.getAvailableStartTimes.map((time) {
                       final isSelected = selectedStartTime == time;
-                      final formatedTime = _formatTime(time);
+                      final formatedTime = TimeUtils.formatTime(time);
 
                       onStartTimeSelected(time) {
                         setState(() {
@@ -178,11 +159,14 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                       final endTime =
                           selectedStartTime == null
                               ? TimeOfDay.now()
-                              : _calculateEndTime(selectedStartTime!, duration);
+                              : TimeUtils.calculateEndTime(
+                                selectedStartTime!,
+                                duration,
+                              );
                       final formatedEndTime =
                           selectedStartTime == null
                               ? ''
-                              : '\n${_formatTime(endTime)}';
+                              : '\n${TimeUtils.formatTime(endTime)}';
 
                       onDurationSelected(duration) {
                         setState(() {

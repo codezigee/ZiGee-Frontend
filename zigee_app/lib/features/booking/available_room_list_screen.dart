@@ -6,6 +6,7 @@ import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
+import 'package:zigee_app/common/utils/time_utils.dart';
 import 'package:zigee_app/common/widgets/custom_dialog.dart';
 import 'package:zigee_app/common/widgets/custom_snackbar.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
@@ -32,28 +33,16 @@ class AvailableRoomListScreen extends StatefulWidget {
 class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
   Room? _selectedRoom;
 
-  String _formatTime(TimeOfDay time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-  }
-
-  TimeOfDay _calculateEndTime(TimeOfDay startTime, int durationMinutes) {
-    final startMinutes = startTime.hour * 60 + startTime.minute;
-    final endMinutes = startMinutes + durationMinutes;
-    final endHour = (endMinutes ~/ 60) % 24;
-    final endMinute = endMinutes % 60;
-    return TimeOfDay(hour: endHour, minute: endMinute);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final endTime = _calculateEndTime(
+    final endTime = TimeUtils.calculateEndTime(
       widget.selectedStartTime,
       widget.selectedDurationMinutes,
     );
     final formattedDate =
         '${widget.selectedDate.year}년 ${widget.selectedDate.month}월 ${widget.selectedDate.day}일';
     final timeRange =
-        '${_formatTime(widget.selectedStartTime)} - ${_formatTime(endTime)}';
+        '${TimeUtils.formatTime(widget.selectedStartTime)} - ${TimeUtils.formatTime(endTime)}';
 
     return Scaffold(
       appBar: CupertinoNavigationBar(
