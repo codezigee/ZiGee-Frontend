@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zigee_app/app/mock/mock_room_data.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
@@ -41,49 +42,6 @@ class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
     final endMinute = endMinutes % 60;
     return TimeOfDay(hour: endHour, minute: endMinute);
   }
-
-  List<Room> get _availableRooms => [
-    Room(
-      id: '1',
-      name: '회의실 A',
-      capacity: 8,
-      location: '2층',
-      description: '프로젝터, 화이트보드 구비',
-      isAvailable: true,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-    Room(
-      id: '2',
-      name: '회의실 B',
-      capacity: 12,
-      location: '3층',
-      description: '대형 회의실, 화상회의 시설 완비',
-      isAvailable: true,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-    Room(
-      id: '3',
-      name: '소회의실 C',
-      capacity: 4,
-      location: '2층',
-      description: '소규모 미팅용',
-      isAvailable: true,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-    Room(
-      id: '4',
-      name: '회의실 D',
-      capacity: 6,
-      location: '1층',
-      description: '화상회의 전용실',
-      isAvailable: true,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -167,14 +125,14 @@ class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
             ),
             Expanded(
               child:
-                  _availableRooms.isEmpty
+                  MockRoomData.rooms.isEmpty
                       ? _buildEmptyState()
                       : ListView.builder(
                         padding: const EdgeInsets.all(SpacingTokens.lg),
                         physics: const ClampingScrollPhysics(),
-                        itemCount: _availableRooms.length,
+                        itemCount: MockRoomData.rooms.length,
                         itemBuilder: (context, index) {
-                          final room = _availableRooms[index];
+                          final room = MockRoomData.rooms[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                               vertical: SpacingTokens.sm,
@@ -242,9 +200,9 @@ class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
           Flexible(
             child: ListView.builder(
               physics: const ClampingScrollPhysics(),
-              itemCount: _availableRooms.length,
+              itemCount: MockRoomData.rooms.length,
               itemBuilder: (context, index) {
-                final room = _availableRooms[index];
+                final room = MockRoomData.rooms[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: SpacingTokens.sm,
