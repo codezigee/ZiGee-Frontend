@@ -7,6 +7,9 @@ import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/common/utils/time_utils.dart';
 import 'package:zigee_app/common/widgets/custom_date_picker.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
+import 'package:zigee_app/features/booking/widgets/day_selector.dart';
+import 'package:zigee_app/features/booking/widgets/start_time_selector.dart';
+import 'package:zigee_app/features/booking/widgets/use_time_selector.dart';
 import 'package:zigee_app/models/room.dart';
 import 'package:zigee_app/app/routes/app_routes.dart';
 import 'package:go_router/go_router.dart';
@@ -23,7 +26,7 @@ class RoomSearchScreen extends StatefulWidget {
 }
 
 class _RoomSearchScreenState extends State<RoomSearchScreen> {
-  DateTime focusedDate = DateTime.now();
+  DateTime focusedDay = DateTime.now();
   DateTime? selectedDate = DateTime.now();
   TimeOfDay? selectedStartTime;
   int? selectedDurationMinutes;
@@ -51,16 +54,8 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
             spacing: SpacingTokens.sm,
             children: [
               /// 1. 날짜 선택
-              Text(
-                '날짜를 선택하세요.',
-                style: TypographyStyles.titleLarge.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TableCalendar(
-                focusedDay: focusedDate,
-                firstDay: kFirstDay,
-                lastDay: kLastDay,
+              DaySelector(
+                focusedDay: focusedDay,
                 selectedDayPredicate: (day) {
                   return isSameDay(selectedDate, day);
                 },
@@ -68,126 +63,34 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                   if (!isSameDay(selectedDate, selectedDay)) {
                     setState(() {
                       selectedDate = selectedDay;
-                      focusedDate = focusedDay;
+                      focusedDay = focusedDay;
                     });
-
-                    debugPrint('onDaySelected: $selectedDate');
                   }
                 },
                 onPageChanged: (focusedDay) {
-                  focusedDate = focusedDay;
+                  focusedDay = focusedDay;
                 },
-                calendarStyle: CalendarStyle(
-                  todayDecoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ColorTokens.buttonDisabled,
-                  ),
-                  todayTextStyle: TypographyStyles.bodyMedium,
-                  selectedDecoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ColorTokens.buttonPrimary,
-                  ),
-                  selectedTextStyle: TypographyStyles.bodyMedium.copyWith(
-                    color: ColorTokens.textOnDark,
-                  ),
-                  defaultTextStyle: TypographyStyles.bodyMedium,
-                  weekendTextStyle: TypographyStyles.bodyMedium,
-                  tablePadding: EdgeInsets.zero,
-                ),
-                headerStyle: HeaderStyle(
-                  titleCentered: true,
-                  formatButtonVisible: false,
-                  titleTextStyle: TypographyStyles.titleMedium,
-                  titleTextFormatter: (dateTime, locale) {
-                    return '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일';
-                  },
-                  headerPadding: EdgeInsets.zero,
-                ),
               ),
               const SizedBox(height: SpacingTokens.md),
 
               /// 2. 시간 선택
-              Text(
-                '시작 시간을 선택하세요.',
-                style: TypographyStyles.titleLarge.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Wrap(
-                spacing: SpacingTokens.sm,
-                runSpacing: SpacingTokens.sm,
-                children:
-                    TimeUtils.getAvailableStartTimes.map((time) {
-                      final isSelected = selectedStartTime == time;
-                      final formatedTime = TimeUtils.formatTime(time);
-
-                      onStartTimeSelected(time) {
-                        setState(() {
-                          selectedStartTime = time;
-                        });
-
-                        debugPrint('onStartTimeSelected: $selectedStartTime');
-                      }
-
-                      return isSelected
-                          ? CustomTextButton.primary(
-                            label: formatedTime,
-                            onPressed: () => onStartTimeSelected(time),
-                          )
-                          : CustomTextButton.secondary(
-                            label: formatedTime,
-                            onPressed: () => onStartTimeSelected(time),
-                          );
-                    }).toList(),
+              StartTimeSelector(
+                selectedStartTime: selectedStartTime,
+                onStartTimeSelected: (time) {
+                  setState(() {
+                    selectedStartTime = time;
+                  });
+                },
               ),
               const SizedBox(height: SpacingTokens.md),
 
               /// 3. 시간 선택
-              Text(
-                '이용 시간을 선택하세요.',
-                style: TypographyStyles.titleLarge.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children:
-                    [30, 60, 90, 120].map((duration) {
-                      final isSelected = selectedDurationMinutes == duration;
-
-                      final endTime =
-                          selectedStartTime == null
-                              ? TimeOfDay.now()
-                              : TimeUtils.calculateEndTime(
-                                selectedStartTime!,
-                                duration,
-                              );
-                      final formatedEndTime =
-                          selectedStartTime == null
-                              ? ''
-                              : '\n${TimeUtils.formatTime(endTime)}';
-
-                      onDurationSelected(duration) {
-                        setState(() {
-                          selectedDurationMinutes = duration;
-                        });
-
-                        debugPrint(
-                          'onDurationSelected: ${selectedDurationMinutes}',
-                        );
-                      }
-
-                      return isSelected
-                          ? CustomTextButton.primary(
-                            label: '${duration}분${formatedEndTime}',
-                            onPressed: () => onDurationSelected(duration),
-                          )
-                          : CustomTextButton.secondary(
-                            label: '${duration}분${formatedEndTime}',
-                            onPressed: () => onDurationSelected(duration),
-                          );
-                    }).toList(),
+              UseTimeSelector(
+                onDurationSelected: (duration) {
+                  setState(() {
+                    selectedDurationMinutes = duration;
+                  });
+                },
               ),
               const SizedBox(height: SpacingTokens.md),
 
