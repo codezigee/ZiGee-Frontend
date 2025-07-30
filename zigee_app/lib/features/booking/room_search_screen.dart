@@ -14,10 +14,6 @@ import 'package:zigee_app/models/room.dart';
 import 'package:zigee_app/app/routes/app_routes.dart';
 import 'package:go_router/go_router.dart';
 
-final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
-
 class RoomSearchScreen extends StatefulWidget {
   const RoomSearchScreen({super.key});
 
@@ -43,7 +39,7 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
-            vertical: SpacingTokens.md,
+            vertical: SpacingTokens.lg,
             horizontal: SpacingTokens.lg,
           ),
           physics: const ClampingScrollPhysics(),
@@ -55,66 +51,78 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
               /// 1. 날짜 선택
               DaySelector(
                 focusedDay: focusedDay,
-                selectedDayPredicate: (day) {
-                  return isSameDay(selectedDate, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (!isSameDay(selectedDate, selectedDay)) {
-                    setState(() {
-                      selectedDate = selectedDay;
-                      focusedDay = focusedDay;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  focusedDay = focusedDay;
-                },
+                selectedDayPredicate: (day) => isSameDay(selectedDate, day),
+                onDaySelected: _onDaySelected,
+                onPageChanged: _onPageChanged,
               ),
 
               /// 2. 시간 선택
               StartTimeSelector(
                 selectedStartTime: selectedStartTime,
-                onStartTimeSelected: (time) {
-                  setState(() {
-                    selectedStartTime = time;
-                  });
-                },
+                onStartTimeSelected: _onStartTimeSelected,
               ),
-              const SizedBox(height: SpacingTokens.md),
 
               /// 3. 시간 선택
               UseTimeSelector(
                 selectedDurationMinutes: selectedDurationMinutes,
                 selectedStartTime: selectedStartTime,
-                onDurationSelected: (duration) {
-                  setState(() {
-                    selectedDurationMinutes = duration;
-                  });
-                },
+                onDurationSelected: _onDurationSelected,
               ),
-              const SizedBox(height: SpacingTokens.md),
 
-              selectedDate != null &&
-                      selectedStartTime != null &&
-                      selectedDurationMinutes != null
-                  ? CustomTextButton.primary(
-                    label: '조회하기',
-                    onPressed: () {
-                      context.push(
-                        AppRoutes.roomList,
-                        extra: {
-                          'selectedDate': selectedDate,
-                          'selectedStartTime': selectedStartTime,
-                          'selectedDurationMinutes': selectedDurationMinutes,
-                        },
-                      );
-                    },
-                  )
-                  : CustomTextButton.destructive(label: '조회하기'),
+              /// 4. 조회 버튼
+              _buildSearchButton(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildSearchButton() {
+    final canSearch =
+        selectedDate != null &&
+        selectedStartTime != null &&
+        selectedDurationMinutes != null;
+
+    return canSearch
+        ? CustomTextButton.primary(
+          label: '조회하기',
+          onPressed: () {
+            context.push(
+              AppRoutes.roomList,
+              extra: {
+                'selectedDate': selectedDate,
+                'selectedStartTime': selectedStartTime,
+                'selectedDurationMinutes': selectedDurationMinutes,
+              },
+            );
+          },
+        )
+        : CustomTextButton.destructive(label: '조회하기');
+  }
+
+  void _onDaySelected(selectedDay, focusedDay) {
+    if (!isSameDay(selectedDate, selectedDay)) {
+      setState(() {
+        selectedDate = selectedDay;
+        focusedDay = focusedDay;
+      });
+    }
+  }
+
+  void _onPageChanged(day) {
+    focusedDay = day;
+  }
+
+  void _onStartTimeSelected(time) {
+    setState(() {
+      selectedStartTime = time;
+    });
+  }
+
+  void _onDurationSelected(duration) {
+    setState(() {
+      selectedDurationMinutes = duration;
+    });
   }
 }
