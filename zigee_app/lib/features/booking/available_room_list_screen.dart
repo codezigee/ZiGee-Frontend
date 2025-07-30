@@ -33,8 +33,6 @@ class AvailableRoomListScreen extends StatefulWidget {
 }
 
 class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
-  Room? _selectedRoom;
-
   @override
   Widget build(BuildContext context) {
     final endTime = TimeUtils.calculateEndTime(
@@ -57,12 +55,14 @@ class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            /// 1. 예약 조건
             BookingConditionCard(
               formattedDate: formattedDate,
               timeRange: timeRange,
               selectedDurationMinutes: widget.selectedDurationMinutes,
             ),
 
+            /// 2. 회의실 목록
             RoomCardList(rooms: MockRoomData.rooms),
           ],
         ),
