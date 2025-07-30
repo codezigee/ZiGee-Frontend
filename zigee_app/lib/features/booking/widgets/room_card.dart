@@ -3,6 +3,7 @@ import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
+import 'package:zigee_app/common/styles/card_styles.dart';
 import 'package:zigee_app/features/booking/widgets/room_available_status_badge.dart';
 import 'package:zigee_app/features/booking/widgets/room_description_item.dart';
 import 'package:zigee_app/models/room.dart';
@@ -22,14 +23,7 @@ class RoomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: ColorTokens.white,
-        borderRadius: BorderRadius.circular(SizingTokens.radiusMd),
-        border: Border.all(
-          color:
-              isSelected ? ColorTokens.borderFocus : ColorTokens.borderPrimary,
-        ),
-      ),
+      decoration: CardStyles.roomCardDecoration(isSelected),
       child: InkWell(
         onTap: onTap,
         child: Padding(
