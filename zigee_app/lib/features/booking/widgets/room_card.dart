@@ -3,6 +3,8 @@ import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
+import 'package:zigee_app/features/booking/widgets/room_available_status_badge.dart';
+import 'package:zigee_app/features/booking/widgets/room_description_item.dart';
 import 'package:zigee_app/models/room.dart';
 
 class RoomCard extends StatelessWidget {
@@ -50,59 +52,21 @@ class RoomCard extends StatelessWidget {
                         const SizedBox(height: SpacingTokens.xs),
                         Row(
                           children: [
-                            const Icon(
-                              Icons.location_on,
-                              size: 14,
-                              color: ColorTokens.gray600,
-                            ),
-                            const SizedBox(width: SpacingTokens.xs),
-                            Text(
-                              room.location,
-                              style: TypographyStyles.bodySmall.copyWith(
-                                color: ColorTokens.gray600,
-                              ),
+                            RoomDescriptionItem(
+                              icon: Icons.location_on,
+                              content: room.location,
                             ),
                             const SizedBox(width: SpacingTokens.sm),
-                            const Icon(
-                              Icons.people,
-                              size: 14,
-                              color: ColorTokens.gray600,
-                            ),
-                            const SizedBox(width: SpacingTokens.xs),
-                            Text(
-                              '${room.capacity}명',
-                              style: TypographyStyles.bodySmall.copyWith(
-                                color: ColorTokens.gray600,
-                              ),
+                            RoomDescriptionItem(
+                              icon: Icons.people,
+                              content: '${room.capacity}명',
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: SpacingTokens.sm,
-                      vertical: SpacingTokens.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      color:
-                          room.isAvailable
-                              ? ColorTokens.statusSuccess.withValues(alpha: 0.1)
-                              : ColorTokens.statusError.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      room.isAvailable ? '예약 가능' : '예약 불가',
-                      style: TypographyStyles.bodySmall.copyWith(
-                        color:
-                            room.isAvailable
-                                ? ColorTokens.statusSuccess
-                                : ColorTokens.statusError,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                  RoomAvailableStatusBadge(room: room),
                 ],
               ),
             ],
