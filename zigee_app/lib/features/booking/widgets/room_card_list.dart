@@ -6,47 +6,46 @@ import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/features/booking/widgets/room_card.dart';
 import 'package:zigee_app/models/room.dart';
 
-class RoomCardList extends StatefulWidget {
+class RoomCardList extends StatelessWidget {
   final List<Room> rooms;
-  Room? selectedRoom;
+  final Room? selectedRoom;
+  final ValueChanged<Room?> onRoomSelected;
 
-  RoomCardList({super.key, required this.rooms, this.selectedRoom});
+  const RoomCardList({
+    super.key,
+    required this.rooms,
+    this.selectedRoom,
+    required this.onRoomSelected,
+  });
 
-  @override
-  State<RoomCardList> createState() => _RoomCardListState();
-}
+  void _handleRoomSelection(Room room) {
+    if (selectedRoom != room) {
+      onRoomSelected(room);
+    } else {
+      onRoomSelected(null);
+    }
+  }
 
-class _RoomCardListState extends State<RoomCardList> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child:
-          widget.rooms.isEmpty
+          rooms.isEmpty
               ? _buildEmptyState()
               : ListView.builder(
                 padding: const EdgeInsets.all(SpacingTokens.lg),
                 physics: const ClampingScrollPhysics(),
-                itemCount: widget.rooms.length,
+                itemCount: rooms.length,
                 itemBuilder: (context, index) {
-                  final room = widget.rooms[index];
+                  final room = rooms[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: SpacingTokens.sm,
                     ),
                     child: RoomCard(
                       room: room,
-                      isSelected: widget.selectedRoom == room,
-                      onTap: () {
-                        if (widget.selectedRoom != room) {
-                          setState(() {
-                            widget.selectedRoom = room;
-                          });
-                        } else {
-                          setState(() {
-                            widget.selectedRoom = null;
-                          });
-                        }
-                      },
+                      isSelected: selectedRoom == room,
+                      onTap: () => _handleRoomSelection(room),
                     ),
                   );
                 },
@@ -105,27 +104,17 @@ class _RoomCardListState extends State<RoomCardList> {
           Flexible(
             child: ListView.builder(
               physics: const ClampingScrollPhysics(),
-              itemCount: widget.rooms.length,
+              itemCount: rooms.length,
               itemBuilder: (context, index) {
-                final room = widget.rooms[index];
+                final room = rooms[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: SpacingTokens.sm,
                   ),
                   child: RoomCard(
                     room: room,
-                    isSelected: widget.selectedRoom == room,
-                    onTap: () {
-                      if (widget.selectedRoom != room) {
-                        setState(() {
-                          widget.selectedRoom = room;
-                        });
-                      } else {
-                        setState(() {
-                          widget.selectedRoom = null;
-                        });
-                      }
-                    },
+                    isSelected: selectedRoom == room,
+                    onTap: () => _handleRoomSelection(room),
                   ),
                 );
               },
