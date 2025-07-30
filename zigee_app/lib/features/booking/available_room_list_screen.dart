@@ -10,7 +10,9 @@ import 'package:zigee_app/common/utils/time_utils.dart';
 import 'package:zigee_app/common/widgets/custom_dialog.dart';
 import 'package:zigee_app/common/widgets/custom_snackbar.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
+import 'package:zigee_app/features/booking/widgets/booking_condition_card.dart';
 import 'package:zigee_app/features/booking/widgets/room_card.dart';
+import 'package:zigee_app/features/booking/widgets/room_card_list.dart';
 import 'package:zigee_app/models/room.dart';
 
 class AvailableRoomListScreen extends StatefulWidget {
@@ -55,186 +57,15 @@ class _AvailableRoomListScreenState extends State<AvailableRoomListScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(SpacingTokens.lg),
-              margin: const EdgeInsets.only(
-                top: SpacingTokens.lg,
-                left: SpacingTokens.lg,
-                right: SpacingTokens.lg,
-              ),
-              decoration: BoxDecoration(
-                color: ColorTokens.white,
-                border: Border.all(
-                  color: ColorTokens.borderSecondary,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(SizingTokens.radiusMd),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '예약 조건',
-                    style: TypographyStyles.titleMedium.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: SpacingTokens.sm),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.calendar_today,
-                        size: 16,
-                        color: ColorTokens.gray600,
-                      ),
-                      const SizedBox(width: SpacingTokens.xs),
-                      Text(formattedDate, style: TypographyStyles.bodyMedium),
-                    ],
-                  ),
-                  const SizedBox(height: SpacingTokens.xs),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.access_time,
-                        size: 16,
-                        color: ColorTokens.gray600,
-                      ),
-                      const SizedBox(width: SpacingTokens.xs),
-                      Text(timeRange, style: TypographyStyles.bodyMedium),
-                      const SizedBox(width: SpacingTokens.sm),
-                      Text(
-                        '(${widget.selectedDurationMinutes}분)',
-                        style: TypographyStyles.bodySmall.copyWith(
-                          color: ColorTokens.gray600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            BookingConditionCard(
+              formattedDate: formattedDate,
+              timeRange: timeRange,
+              selectedDurationMinutes: widget.selectedDurationMinutes,
             ),
-            Expanded(
-              child:
-                  MockRoomData.rooms.isEmpty
-                      ? _buildEmptyState()
-                      : ListView.builder(
-                        padding: const EdgeInsets.all(SpacingTokens.lg),
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: MockRoomData.rooms.length,
-                        itemBuilder: (context, index) {
-                          final room = MockRoomData.rooms[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: SpacingTokens.sm,
-                            ),
-                            child: RoomCard(
-                              room: room,
-                              isSelected: _selectedRoom == room,
-                              onTap: () {
-                                () {
-                                  if (_selectedRoom != room) {
-                                    setState(() {
-                                      _selectedRoom = room;
-                                    });
-                                  } else {
-                                    setState(() {
-                                      _selectedRoom = null;
-                                    });
-                                  }
-                                };
-                              },
-                            ),
-                          );
-                        },
-                      ),
-              // _buildEmptyState(),
-            ),
+
+            RoomCardList(rooms: MockRoomData.rooms),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                spacing: SpacingTokens.sm,
-                children: [
-                  const Icon(
-                    Icons.search_off,
-                    size: SizingTokens.iconHuge,
-                    color: ColorTokens.gray400,
-                  ),
-                  Text(
-                    '선택한 시간에 예약 가능한\n회의실이 없습니다.',
-                    textAlign: TextAlign.center,
-                    style: TypographyStyles.bodyMedium.copyWith(
-                      color: ColorTokens.gray600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(flex: 2, child: _buildRandomRoomList()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRandomRoomList() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: SpacingTokens.sm,
-        children: [
-          Text(
-            '대신 비슷한 시간대의\n회의실을 추천해드릴게요.',
-            textAlign: TextAlign.start,
-            style: TypographyStyles.titleLarge.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Flexible(
-            child: ListView.builder(
-              physics: const ClampingScrollPhysics(),
-              itemCount: MockRoomData.rooms.length,
-              itemBuilder: (context, index) {
-                final room = MockRoomData.rooms[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: SpacingTokens.sm,
-                  ),
-                  child: RoomCard(
-                    room: room,
-                    isSelected: _selectedRoom == room,
-                    onTap: () {
-                      () {
-                        if (_selectedRoom != room) {
-                          setState(() {
-                            _selectedRoom = room;
-                          });
-                        } else {
-                          setState(() {
-                            _selectedRoom = null;
-                          });
-                        }
-                      };
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
