@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/features/auth/login_screen.dart';
-import 'package:zigee_app/features/booking/booking_screen.dart';
+import 'package:zigee_app/features/booking/room_search_screen.dart';
+import 'package:zigee_app/features/booking/available_room_list_screen.dart';
 import 'package:zigee_app/features/my_booking/my_booking_screen.dart';
 import 'package:zigee_app/features/settings/setting_screen.dart';
 
 abstract class AppRoutes {
   static const initial = '/login';
   static const booking = '/booking';
+  static const roomList = '/room-list';
   static const myBooking = '/my-booking';
   static const home = '/my-booking';
   static const settings = '/settings';
@@ -24,8 +26,8 @@ class AppRouter {
 }
 
 final goRouter = GoRouter(
-  // initialLocation: AppRoutes.home,
-  initialLocation: AppRoutes.initial,
+  initialLocation: AppRoutes.home,
+  // initialLocation: AppRoutes.initial,
   routes: [
     GoRoute(
       path: AppRoutes.initial,
@@ -45,7 +47,20 @@ final goRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.booking,
-              builder: (context, state) => const BookingScreen(),
+              builder: (context, state) => const RoomSearchScreen(),
+            ),
+            GoRoute(
+              path: AppRoutes.roomList,
+              builder: (context, state) {
+                final extra = state.extra as Map<String, dynamic>?;
+                return AvailableRoomListScreen(
+                  selectedDate: extra?['selectedDate'] ?? DateTime.now(),
+                  selectedStartTime:
+                      extra?['selectedStartTime'] ?? TimeOfDay.now(),
+                  selectedDurationMinutes:
+                      extra?['selectedDurationMinutes'] ?? 60,
+                );
+              },
             ),
           ],
         ),
