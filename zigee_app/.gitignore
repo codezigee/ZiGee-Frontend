@@ -58,3 +58,9 @@ android/app/*.iml
 # 5. 빌드 / 디버깅 관련
 app.*.symbols # Symbolication
 app.*.map.json # Obfuscation
+
+# 6. 환경 변수 파일
+.env
+.env.local
+.env.production
+.env.staging
