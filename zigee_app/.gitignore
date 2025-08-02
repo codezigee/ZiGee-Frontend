@@ -64,3 +64,4 @@ app.*.map.json # Obfuscation
 .env.local
 .env.production
 .env.staging
+lib/app/config/env.g.dart
