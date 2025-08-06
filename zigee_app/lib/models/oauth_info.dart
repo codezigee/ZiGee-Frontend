@@ -1,7 +1,9 @@
+enum SocialProvider { kakao, google, apple }
+
 class OAuthInfo {
   final String id;
   final String memberId;
-  final String provider;
+  final SocialProvider provider;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -13,24 +15,15 @@ class OAuthInfo {
     required this.updatedAt,
   });
 
-  factory OAuthInfo.fromJson(Map<String, dynamic> json) {
-    return OAuthInfo(
-      id: json['id'] as String,
-      memberId: json['member_id'] as String,
-      provider: json['provider'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'member_id': memberId,
-      'provider': provider,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
-    };
+  String get providerDisplayName {
+    switch (provider) {
+      case SocialProvider.kakao:
+        return '카카오';
+      case SocialProvider.google:
+        return '구글';
+      case SocialProvider.apple:
+        return '애플';
+    }
   }
 
   @override
