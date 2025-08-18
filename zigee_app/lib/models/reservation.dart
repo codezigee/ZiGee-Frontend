@@ -29,50 +29,97 @@ class Reservation {
     required this.updatedAt,
   });
 
-  factory Reservation.fromJson(Map<String, dynamic> json) {
-    return Reservation(
-      id: json['id'] as String,
-      uid: json['uid'] as String,
-      userId: json['user_id'] as String,
-      roomId: json['room_id'] as String,
-      title: json['title'] as String,
-      startTime: DateTime.parse(json['start_time'] as String),
-      endTime: DateTime.parse(json['end_time'] as String),
-      purpose: json['purpose'] as String?,
-      status: _parseStatus(json['status'] as String?),
-      attendeeCount: json['attendee_count'] ?? 1,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
+  Duration get duration => endTime.difference(startTime);
+
+  bool get isConfirmed => status == ReservationStatus.confirmed;
+  bool get isPending => status == ReservationStatus.pending;
+  bool get isCancelled => status == ReservationStatus.cancelled;
+
+  bool get isToday {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final reservationDate = DateTime(
+      startTime.year,
+      startTime.month,
+      startTime.day,
     );
+    return reservationDate == today;
   }
 
-  static ReservationStatus _parseStatus(String? status) {
-    switch (status?.toUpperCase()) {
-      case 'CONFIRMED':
-        return ReservationStatus.confirmed;
-      case 'CANCELLED':
-        return ReservationStatus.cancelled;
-      case 'PENDING':
-      default:
-        return ReservationStatus.pending;
+  bool get isUpcoming => startTime.isAfter(DateTime.now());
+  bool get isOngoing {
+    final now = DateTime.now();
+    return now.isAfter(startTime) && now.isBefore(endTime) && isConfirmed;
+  }
+
+  bool get isPast => endTime.isBefore(DateTime.now());
+
+  bool get isCompleted => isPast && (isConfirmed || isCancelled);
+  bool get isActive => isConfirmed || isPending;
+  bool get isScheduled => isUpcoming && (isConfirmed || isPending);
+
+  String get formattedDateTime =>
+      '${startTime.year}/${startTime.month.toString().padLeft(2, '0')}/'
+      '${startTime.day.toString().padLeft(2, '0')}/'
+      '${startTime.hour.toString().padLeft(2, '0')}:'
+      '${startTime.minute.toString().padLeft(2, '0')}';
+
+  String get formattedDate =>
+      '${startTime.year}/${startTime.month.toString().padLeft(2, '0')}/'
+      '${startTime.day.toString().padLeft(2, '0')}';
+
+  String get displayTimeRange {
+    final startStr =
+        '${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}';
+    final endStr =
+        '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}';
+    return '$startStr - $endStr';
+  }
+
+  String get timeUntilStart {
+    if (isPast) return '완료됨';
+    if (isOngoing) return '진행중';
+
+    final duration = startTime.difference(DateTime.now());
+    if (duration.inMinutes < 60) {
+      return '${duration.inMinutes}분 뒤';
+    } else if (duration.inHours < 24) {
+      return '${duration.inHours}시간 뒤';
+    } else {
+      return '${duration.inDays}일 뒤';
     }
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'uid': uid,
-      'user_id': userId,
-      'room_id': roomId,
-      'title': title,
-      'start_time': startTime.toIso8601String(),
-      'end_time': endTime.toIso8601String(),
-      'purpose': purpose,
-      'status': status.name.toUpperCase(),
-      'attendee_count': attendeeCount,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
-    };
+  bool canBeCancelled() {
+    return (isPending || isConfirmed) && isUpcoming;
+  }
+
+  bool canBeModified() {
+    return isPending && isUpcoming;
+  }
+
+  Reservation copyWith({
+    String? title,
+    DateTime? startTime,
+    DateTime? endTime,
+    String? purpose,
+    ReservationStatus? status,
+    int? attendeeCount,
+  }) {
+    return Reservation(
+      id: id,
+      uid: uid,
+      userId: userId,
+      roomId: roomId,
+      title: title ?? this.title,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      purpose: purpose ?? this.purpose,
+      status: status ?? this.status,
+      attendeeCount: attendeeCount ?? this.attendeeCount,
+      createdAt: createdAt,
+      updatedAt: DateTime.now(),
+    );
   }
 
   @override
