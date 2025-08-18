@@ -21,32 +21,35 @@ class Room {
     required this.updatedAt,
   });
 
-  factory Room.fromJson(Map<String, dynamic> json) {
-    return Room(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      capacity: json['capacity'] as int,
-      location: json['location'] as String,
-      description: json['description'] as String?,
-      isAvailable: json['is_available'] ?? true,
-      imageUrl: json['image_url'] as String?,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
-    );
+  // TODO: - imageUrl 유효성 검사하는 비즈니스 로직 추가
+
+  bool get hasDescription => description != null && description!.isNotEmpty;
+
+  String get capacityText => '${capacity}명';
+
+  bool canAccommodate(int requiredCapacity) {
+    return isAvailable && capacity >= requiredCapacity;
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'capacity': capacity,
-      'location': location,
-      'description': description,
-      'is_available': isAvailable,
-      'image_url': imageUrl,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
-    };
+  Room copyWith({
+    String? name,
+    int? capacity,
+    String? location,
+    String? description,
+    bool? isAvailable,
+    String? imageUrl,
+  }) {
+    return Room(
+      id: id,
+      name: name ?? this.name,
+      capacity: capacity ?? this.capacity,
+      location: location ?? this.location,
+      description: description ?? this.description,
+      isAvailable: isAvailable ?? this.isAvailable,
+      imageUrl: imageUrl ?? this.imageUrl,
+      createdAt: createdAt,
+      updatedAt: DateTime.now(),
+    );
   }
 
   @override
