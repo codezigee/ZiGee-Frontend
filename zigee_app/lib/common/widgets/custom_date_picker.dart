@@ -29,7 +29,7 @@ class CustomDatePicker extends StatelessWidget {
               surface: ColorTokens.white,
               onSurface: ColorTokens.textPrimary,
             ),
-            dialogTheme: const DialogTheme(
+            dialogTheme: const DialogThemeData(
               elevation: 0,
               backgroundColor: ColorTokens.white,
             ),
