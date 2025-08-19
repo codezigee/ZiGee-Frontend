@@ -7,68 +7,86 @@ import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/app/theme/typography_tokens.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
 import 'package:zigee_app/features/my_booking/widgets/my_booking_detail_dialog.dart';
+import 'package:zigee_app/models/reservation.dart';
+import 'package:zigee_app/models/room.dart';
 
 class MyBookingRoomCard extends StatelessWidget {
-  const MyBookingRoomCard({super.key});
+  final Room room;
+  final Reservation reservation;
+
+  const MyBookingRoomCard({
+    super.key,
+    required this.room,
+    required this.reservation,
+  });
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
+    final isExpired = reservation.endTime.isBefore(DateTime.now());
 
-    return InkWell(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder:
-              (_) => Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(SizingTokens.radiusXxl),
-                ),
-                child: MyBookingDetailDialog(
-                  onCloseButtonPressed: () => context.pop(),
-                  onCancelButtonPressed: () => context.pop(),
-                  onChangeButtonPressed: () => context.pop(),
-                ),
-              ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        width: mediaQuery.width,
-        height: mediaQuery.height * 0.1,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              width: mediaQuery.width * 0.2,
-              child: Image.asset(
-                'assets/images/trial_image_1.jpeg',
-                fit: BoxFit.cover,
-              ),
+    Widget card = Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      width: mediaQuery.width,
+      height: mediaQuery.height * 0.1,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            width: mediaQuery.width * 0.2,
+            child: Image.asset(
+              'assets/images/trial_image_1.jpeg',
+              fit: BoxFit.cover,
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              flex: 4,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '1 회의실',
-                    style: TypographyStyles.titleMedium.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            flex: 4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  room.name,
+                  style: TypographyStyles.titleMedium.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
-                  const Text(
-                    '10분 뒤 (2025/05/26/22:00)',
-                    style: TypographyStyles.titleSmall,
-                  ),
-                ],
-              ),
+                ),
+                Text(
+                  // '10분 뒤 (2025/05/26/22:00)',
+                  // reservation.formattedDateTime,
+                  '${reservation.timeUntilStart} (${reservation.formattedDateTime})',
+                  style: TypographyStyles.titleSmall,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+
+    if (isExpired) {
+      return Opacity(opacity: 0.5, child: card);
+    } else {
+      return InkWell(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder:
+                (_) => Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(SizingTokens.radiusXxl),
+                  ),
+                  child: MyBookingDetailDialog(
+                    onCloseButtonPressed: () => context.pop(),
+                    onCancelButtonPressed: () => context.pop(),
+                    onChangeButtonPressed: () => context.pop(),
+                  ),
+                ),
+          );
+        },
+        child: card,
+      );
+    }
   }
 }
