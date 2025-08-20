@@ -30,7 +30,7 @@ class CustomSnackbar {
         ),
         backgroundColor: ColorTokens.buttonPrimary,
         borderRadius: SizingTokens.radiusLg,
-        margin: const EdgeInsets.all(SpacingTokens.screenXs),
+        margin: const EdgeInsets.all(SpacingTokens.screenPadding),
         snackPosition: SnackPosition.BOTTOM,
         duration: duration,
       ),

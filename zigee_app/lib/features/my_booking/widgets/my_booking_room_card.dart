@@ -27,21 +27,24 @@ class MyBookingRoomCard extends StatelessWidget {
     final isExpired = reservation.endTime.isBefore(DateTime.now());
 
     Widget card = Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(
+        horizontal: SpacingTokens.bookingCardHorizontalPadding,
+        vertical: SpacingTokens.bookingCardVerticalPadding,
+      ),
       width: mediaQuery.width,
-      height: mediaQuery.height * 0.1,
+      height: SizingTokens.bookingCardHeight,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
-            width: mediaQuery.width * 0.2,
+            width: SizingTokens.bookingCardImageSize,
             child: NetworkImageWidget(
               imageUrl: room.imageUrl,
-              width: mediaQuery.width * 0.2,
+              width: SizingTokens.bookingCardImageSize,
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: SpacingTokens.md),
           Expanded(
             flex: 4,
             child: Column(
