@@ -9,8 +9,9 @@ class DummyRooms {
       location: '2층 서쪽',
       description: '프로젝터, 화이트보드, 영상 회의 시설 완비',
       isAvailable: true,
-      imageUrl:
-          'https://images.unsplash.com/photo-1707386321206-b4ddaf645bbc?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      // imageUrl:
+      // 'https://images.unsplash.com/photo-1707386321206-b4ddaf645bbc?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      // '',
       createdAt: DateTime.now().subtract(const Duration(days: 30)),
       updatedAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
@@ -22,8 +23,8 @@ class DummyRooms {
       description: '대형 회의테이블, 55인치 모니터, 영상회의 시설',
       isAvailable: true,
       imageUrl:
-          'https://images.unsplash.com/photo-1631246957572-0c49e4ee6ff4?q=80&w=1724&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-
+          // 'https://images.unsplash.com/photo-1631246957572-0c49e4ee6ff4?q=80&w=1724&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          '',
       createdAt: DateTime.now().subtract(const Duration(days: 25)),
       updatedAt: DateTime.now().subtract(const Duration(hours: 12)),
     ),
@@ -32,7 +33,6 @@ class DummyRooms {
       name: '3 회의실',
       capacity: 8,
       location: '3층 남쪽',
-      description: '소규모 미팅룸, 화이트보드, 무선 프레젠테이션',
       isAvailable: false,
       imageUrl:
           'https://plus.unsplash.com/premium_photo-1681487144031-d502ea9abefc?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -68,7 +68,7 @@ class DummyRooms {
       name: '카페테리아',
       capacity: 16,
       location: '1층 카페테리아',
-      description: '커피와 함께하는 오픈형 회의공간',
+      description: '',
       isAvailable: true,
       imageUrl:
           'https://images.unsplash.com/photo-1552058461-dc1828d58bf6?q=80&w=1734&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
