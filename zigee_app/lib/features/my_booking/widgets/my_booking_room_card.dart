@@ -6,6 +6,7 @@ import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/app/theme/typography_tokens.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
+import 'package:zigee_app/common/widgets/network_image_widget.dart';
 import 'package:zigee_app/features/my_booking/widgets/my_booking_detail_dialog.dart';
 import 'package:zigee_app/models/reservation.dart';
 import 'package:zigee_app/models/room.dart';
@@ -34,8 +35,9 @@ class MyBookingRoomCard extends StatelessWidget {
         children: [
           SizedBox(
             width: mediaQuery.width * 0.2,
-            child: Image.asset(
-              'assets/images/trial_image_1.jpeg',
+            child: NetworkImageWidget(
+              imageUrl: room.imageUrl,
+              width: mediaQuery.width * 0.2,
               fit: BoxFit.cover,
             ),
           ),
