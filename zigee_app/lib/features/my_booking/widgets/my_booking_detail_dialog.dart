@@ -5,14 +5,20 @@ import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
 import 'package:zigee_app/app/theme/typography_tokens.dart';
 import 'package:zigee_app/common/widgets/custom_text_button.dart';
+import 'package:zigee_app/models/reservation.dart';
+import 'package:zigee_app/models/room.dart';
 
 class MyBookingDetailDialog extends StatelessWidget {
+  final Room room;
+  final Reservation reservation;
   final VoidCallback onCloseButtonPressed;
   final VoidCallback onCancelButtonPressed;
   final VoidCallback onChangeButtonPressed;
 
   const MyBookingDetailDialog({
     super.key,
+    required this.room,
+    required this.reservation,
     required this.onCloseButtonPressed,
     required this.onCancelButtonPressed,
     required this.onChangeButtonPressed,
@@ -43,32 +49,32 @@ class MyBookingDetailDialog extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: SpacingTokens.md),
-          const Row(
+          Row(
             children: [
-              Text(
+              const Text(
                 '장소',
                 style: TypographyStyles.bodyMedium,
                 textAlign: TextAlign.center,
               ),
-              Spacer(),
+              const Spacer(),
               Text(
-                '1 회의실',
+                room.name,
                 style: TypographyStyles.bodyMedium,
                 textAlign: TextAlign.center,
               ),
             ],
           ),
           const SizedBox(height: SpacingTokens.sm),
-          const Row(
+          Row(
             children: [
-              Text(
+              const Text(
                 '시간',
                 style: TypographyStyles.bodyMedium,
                 textAlign: TextAlign.center,
               ),
-              Spacer(),
+              const Spacer(),
               Text(
-                '2025/05/26/22:00',
+                reservation.formattedDateTime,
                 style: TypographyStyles.bodyMedium,
                 textAlign: TextAlign.center,
               ),

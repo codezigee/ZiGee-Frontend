@@ -55,8 +55,6 @@ class MyBookingRoomCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  // '10분 뒤 (2025/05/26/22:00)',
-                  // reservation.formattedDateTime,
                   '${reservation.timeUntilStart} (${reservation.formattedDateTime})',
                   style: TypographyStyles.titleSmall,
                 ),
@@ -80,6 +78,8 @@ class MyBookingRoomCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(SizingTokens.radiusXxl),
                   ),
                   child: MyBookingDetailDialog(
+                    room: room,
+                    reservation: reservation,
                     onCloseButtonPressed: () => context.pop(),
                     onCancelButtonPressed: () => context.pop(),
                     onChangeButtonPressed: () => context.pop(),
