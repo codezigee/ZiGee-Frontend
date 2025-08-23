@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
+import 'package:zigee_app/common/widgets/custom_snackbar.dart';
 import 'package:zigee_app/common/widgets/network_image_widget.dart';
 import 'package:zigee_app/features/my_booking/widgets/my_booking_detail_dialog.dart';
 import 'package:zigee_app/models/reservation.dart';
@@ -38,7 +39,6 @@ class MyBookingRoomCard extends StatelessWidget {
           ),
           const SizedBox(width: SpacingTokens.md),
           Expanded(
-            flex: 4,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,21 +73,32 @@ class MyBookingRoomCard extends StatelessWidget {
   }
 
   void _showReservationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (_) => Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(SizingTokens.radiusXxl),
+    try {
+      showDialog(
+        context: context,
+        builder:
+            (_) => Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(SizingTokens.radiusXxl),
+              ),
+              child: MyBookingDetailDialog(
+                room: room,
+                reservation: reservation,
+                onCloseButtonPressed: () => context.pop(),
+                onCancelButtonPressed: () => context.pop(),
+                onChangeButtonPressed: () => context.pop(),
+              ),
             ),
-            child: MyBookingDetailDialog(
-              room: room,
-              reservation: reservation,
-              onCloseButtonPressed: () => context.pop(),
-              onCancelButtonPressed: () => context.pop(),
-              onChangeButtonPressed: () => context.pop(),
-            ),
-          ),
-    );
+      );
+    } catch (error) {
+      debugPrint('[Dialog 오류 발생 in $context] $error');
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          title: '불러오기 오류',
+          message: '예약 정보를 불러올 수 없습니다',
+        );
+      }
+    }
   }
 }
