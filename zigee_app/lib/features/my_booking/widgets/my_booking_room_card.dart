@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
 import 'package:zigee_app/app/theme/spacing_tokens.dart';
 import 'package:zigee_app/app/theme/typography_styles.dart';
-import 'package:zigee_app/app/theme/typography_tokens.dart';
-import 'package:zigee_app/common/widgets/custom_text_button.dart';
 import 'package:zigee_app/common/widgets/network_image_widget.dart';
 import 'package:zigee_app/features/my_booking/widgets/my_booking_detail_dialog.dart';
 import 'package:zigee_app/models/reservation.dart';
@@ -68,25 +65,29 @@ class MyBookingRoomCard extends StatelessWidget {
     } else {
       return InkWell(
         onTap: () {
-          showDialog(
-            context: context,
-            builder:
-                (_) => Dialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(SizingTokens.radiusXxl),
-                  ),
-                  child: MyBookingDetailDialog(
-                    room: room,
-                    reservation: reservation,
-                    onCloseButtonPressed: () => context.pop(),
-                    onCancelButtonPressed: () => context.pop(),
-                    onChangeButtonPressed: () => context.pop(),
-                  ),
-                ),
-          );
+          _showReservationDialog(context);
         },
         child: card,
       );
     }
+  }
+
+  void _showReservationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (_) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(SizingTokens.radiusXxl),
+            ),
+            child: MyBookingDetailDialog(
+              room: room,
+              reservation: reservation,
+              onCloseButtonPressed: () => context.pop(),
+              onCancelButtonPressed: () => context.pop(),
+              onChangeButtonPressed: () => context.pop(),
+            ),
+          ),
+    );
   }
 }
