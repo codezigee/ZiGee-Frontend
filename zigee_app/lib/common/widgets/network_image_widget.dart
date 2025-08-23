@@ -8,6 +8,7 @@ class NetworkImageWidget extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
+  final String? fallbackImagePath;
 
   const NetworkImageWidget({
     super.key,
@@ -15,6 +16,7 @@ class NetworkImageWidget extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.fallbackImagePath,
   });
 
   @override
@@ -29,10 +31,18 @@ class NetworkImageWidget extends StatelessWidget {
       height: height,
       fit: fit,
       placeholder: (context, url) => _buildLoadingPlaceholder(),
-      errorWidget: (context, error, stackTrace) => _buildErrorPlaceholder(),
+      errorWidget:
+          (context, error, stackTrace) =>
+              fallbackImagePath != null
+                  ? _buildFallback(fallbackImagePath!)
+                  : _buildErrorPlaceholder(),
       memCacheWidth: width?.toInt(),
       memCacheHeight: height?.toInt(),
     );
+  }
+
+  Widget _buildFallback(String imagePath) {
+    return Image.asset(imagePath, width: width, height: height, fit: fit);
   }
 
   Widget _buildErrorPlaceholder() {
