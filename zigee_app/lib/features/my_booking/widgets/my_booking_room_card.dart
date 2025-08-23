@@ -23,7 +23,6 @@ class MyBookingRoomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context).size;
     final isExpired = reservation.endTime.isBefore(DateTime.now());
 
     Widget card = Container(
@@ -31,18 +30,14 @@ class MyBookingRoomCard extends StatelessWidget {
         horizontal: SpacingTokens.bookingCardHorizontalPadding,
         vertical: SpacingTokens.bookingCardVerticalPadding,
       ),
-      width: mediaQuery.width,
       height: SizingTokens.bookingCardHeight,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(
+          NetworkImageWidget(
+            imageUrl: room.imageUrl,
             width: SizingTokens.bookingCardImageSize,
-            child: NetworkImageWidget(
-              imageUrl: room.imageUrl,
-              width: SizingTokens.bookingCardImageSize,
-              fit: BoxFit.cover,
-            ),
+            fit: BoxFit.cover,
           ),
           const SizedBox(width: SpacingTokens.md),
           Expanded(
