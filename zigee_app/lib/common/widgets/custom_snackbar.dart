@@ -18,7 +18,7 @@ class CustomSnackbar {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(SizingTokens.radiusLg),
       ),
-      margin: const EdgeInsets.all(SpacingTokens.screenXs),
+      margin: const EdgeInsets.all(SpacingTokens.space16),
       behavior: SnackBarBehavior.floating,
       content: Column(
         mainAxisSize: MainAxisSize.min,

@@ -7,8 +7,8 @@ class AppButtonStyles {
   static ButtonStyle _baseStyle() => ButtonStyle(
     padding: WidgetStateProperty.all<EdgeInsets>(
       const EdgeInsets.symmetric(
-        vertical: SpacingTokens.buttonVertical,
-        horizontal: SpacingTokens.buttonHorizontal,
+        vertical: SpacingTokens.buttonVerticalPadding,
+        horizontal: SpacingTokens.buttonHorizontalPadding,
       ),
     ),
     shape: WidgetStateProperty.all<OutlinedBorder>(

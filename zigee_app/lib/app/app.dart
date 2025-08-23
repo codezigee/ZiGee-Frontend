@@ -72,7 +72,7 @@ class ZigeeApp extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        dividerColor: ColorTokens.borderPrimary,
+        dividerColor: Colors.transparent,
         iconTheme: const IconThemeData(color: ColorTokens.gray700),
         disabledColor: ColorTokens.textDisabled,
         cardColor: ColorTokens.backgroundSecondary,

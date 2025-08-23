@@ -42,6 +42,10 @@ class SizingTokens {
   static const double cardMaxWidth = 400.0;
   static const double cardImageHeight = 200.0;
 
+  /// 5-2. MyBooking Card
+  static const double bookingCardHeight = 80.0;
+  static const double bookingCardImageSize = 80.0;
+
   /// 6. Modal / Dialog
   static const double modalMaxWidth = 480.0;
   static const double modalMinHeight = 200.0;

@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('zigee', style: AppTextStyles.displayLarge),
-                    const SizedBox(height: SpacingTokens.layoutXs),
+                    const SizedBox(height: SpacingTokens.sm),
                     Text(
                       '새싹(SeSAC) 성동 캠퍼스 회의실 예약 서비스',
                       style: AppTextStyles.titleMedium,
@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: SpacingTokens.layoutXs),
+                    const SizedBox(height: SpacingTokens.sm),
 
                     // 2. 구글 로그인
                     SocialLoginButton(
@@ -68,7 +68,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: SpacingTokens.layoutXs),
+                    const SizedBox(height: SpacingTokens.sm),
 
                     // 3. 애플 로그인
                     SocialLoginButton(
