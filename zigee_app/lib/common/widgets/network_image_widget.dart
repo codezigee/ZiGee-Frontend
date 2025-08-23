@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/common/widgets/custom_loading_indicator.dart';
@@ -22,16 +23,13 @@ class NetworkImageWidget extends StatelessWidget {
       return _buildErrorPlaceholder();
     }
 
-    return Image.network(
-      imageUrl!,
+    return CachedNetworkImage(
+      imageUrl: imageUrl!,
       width: width,
       height: height,
       fit: fit,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return _buildLoadingPlaceholder();
-      },
-      errorBuilder: (context, error, stackTrace) => _buildErrorPlaceholder(),
+      placeholder: (context, url) => _buildLoadingPlaceholder(),
+      errorWidget: (context, error, stackTrace) => _buildErrorPlaceholder(),
     );
   }
 
