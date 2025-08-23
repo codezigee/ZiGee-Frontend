@@ -30,6 +30,8 @@ class NetworkImageWidget extends StatelessWidget {
       fit: fit,
       placeholder: (context, url) => _buildLoadingPlaceholder(),
       errorWidget: (context, error, stackTrace) => _buildErrorPlaceholder(),
+      memCacheWidth: width?.toInt(),
+      memCacheHeight: height?.toInt(),
     );
   }
 
