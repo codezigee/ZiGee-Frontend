@@ -82,7 +82,7 @@ class MyBookingDetailDialog extends StatelessWidget {
           ),
           const SizedBox(height: SpacingTokens.md),
           OutlinedButton(
-            onPressed: onChangeButtonPressed,
+            onPressed: reservation.canBeModified() ? onChangeButtonPressed : null,
             style: OutlinedButton.styleFrom(
               foregroundColor: ColorTokens.gray800,
               side: const BorderSide(color: ColorTokens.gray300),
@@ -95,7 +95,7 @@ class MyBookingDetailDialog extends StatelessWidget {
           ),
           const SizedBox(height: SpacingTokens.sm),
           CustomTextButton.primary(
-            onPressed: onCancelButtonPressed,
+            onPressed: reservation.canBeCancelled() ? onCancelButtonPressed : null,
             label: '예약 취소',
           ),
         ],
