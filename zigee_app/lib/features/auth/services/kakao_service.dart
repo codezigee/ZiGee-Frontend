@@ -169,6 +169,7 @@ class KakaoService {
     }
   }
 
+  // JWT 토큰 저장
   Future<void> storeJWT(String jwtToken, String refreshToken) async {
     await _storage.write(key: _accessTokenKey, value: jwtToken);
     await _storage.write(key: _refreshTokenKey, value: refreshToken);
@@ -189,9 +190,7 @@ class KakaoService {
     try {
       final refreshToken = await getRefreshToken();
       if (refreshToken == null) {
-        return AuthFailure(
-          AuthError.tokenExpired('No refresh token available'),
-        );
+        return AuthFailure(AuthError.tokenExpired('Refresh token 만료'));
       }
 
       final response = await _dio.post(
@@ -242,10 +241,10 @@ class KakaoService {
   Future<AuthResult> getCurrentUser() async {
     try {
       final response = await _dio.get('/api/members/1');
-
       if (response.statusCode == 200) {
         return AuthSuccess(OAuthToken('', DateTime(0), '', DateTime(0), []));
       }
+
       return AuthFailure(AuthError.unknown('사용자 정보 조회 실패'));
     } catch (error) {
       return AuthFailure(AuthError.unknown(error.toString()));
@@ -257,6 +256,7 @@ class KakaoService {
     try {
       await UserApi.instance.logout();
       await clearTokens();
+
       final emptyToken = OAuthToken('', DateTime(0), '', DateTime(0), []);
       return AuthSuccess(emptyToken);
     } catch (error) {
