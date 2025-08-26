@@ -92,7 +92,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _handleKakaoLogin(BuildContext context) async {
-    final authResult = await KakaoService().signInWithKakao();
+    final authResult = await KakaoService().loginWithKakao();
 
     switch (authResult) {
       case AuthSuccess():
