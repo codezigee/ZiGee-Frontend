@@ -9,11 +9,56 @@ import 'dart:convert';
 
 class KakaoService {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  final Dio _dio = Dio();
+  late final Dio _dio;
 
   static const String _accessTokenKey = 'jwt_access_token_key';
   static const String _refreshTokenKey = 'jwt_refresh_token_key';
   static const String _baseUrl = 'https://zigee.api.baseurl';
+
+  KakaoService() {
+    _dio = Dio(BaseOptions(baseUrl: _baseUrl)); // Dio 인스턴스 초기화 (baseUrl 설정)
+    _setupInterceptors();
+  }
+
+  // JWT 토큰 자동 관리를 위한 Dio 인터셉터 설정
+  void _setupInterceptors() {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        // 요청 전 처리: JWT 토큰을 Authorization 헤더에 자동 추가
+        onRequest: (options, handler) async {
+          final token = await getAccessToken();
+          // 토큰이 존재하면 Authorization 헤더에 Bearer 토큰 추가
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          handler.next(options);
+        },
+        // 에러 처리: 401 Unauthorized 발생 시 토큰 갱신 시도
+        onError: (error, handler) async {
+          // 401 에러인 경우 토큰 만료로 판단하고 자동 갱신 시도
+          if (error.response?.statusCode == 401) {
+            final refreshResult = await refreshAccessToken();
+
+            // 토큰 갱신 성공 시 원래 요청을 새 토큰으로 재시도
+            if (refreshResult is AuthSuccess) {
+              final newToken = await getAccessToken();
+              final requestOptions = error.requestOptions;
+              requestOptions.headers['Authorization'] = 'Bearer $newToken';
+
+              // 새 토큰으로 원래 요청 재실행
+              final response = await _dio.fetch(requestOptions);
+              handler.resolve(response);
+              return;
+            } else {
+              // 토큰 갱신 실패 시 저장된 모든 토큰 삭제 -> 로그아웃 처리
+              await clearTokens();
+            }
+          }
+          handler.next(error);
+        },
+      ),
+    );
+  }
 
   // 카카오톡 설치 여부 확인 후 로그인 시도
   Future<AuthResult> loginWithKakao() async {
@@ -91,7 +136,7 @@ class KakaoService {
   Future<AuthResult> exchangeKakaoToken(OAuthToken kakaoToken) async {
     try {
       final response = await _dio.post(
-        '$_baseUrl/api/auth/login', // 임시 엔드포인트 URL
+        '/api/auth/login',
         data: {'access_token': kakaoToken.accessToken},
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
@@ -150,7 +195,7 @@ class KakaoService {
       }
 
       final response = await _dio.post(
-        '$_baseUrl/auth/refresh',
+        '/auth/refresh',
         data: {'refresh_token': refreshToken},
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
@@ -191,6 +236,20 @@ class KakaoService {
   Future<void> clearTokens() async {
     await _storage.delete(key: _accessTokenKey);
     await _storage.delete(key: _refreshTokenKey);
+  }
+
+  // 현재 로그인한 사용자 정보 가져오기
+  Future<AuthResult> getCurrentUser() async {
+    try {
+      final response = await _dio.get('/api/members/1');
+
+      if (response.statusCode == 200) {
+        return AuthSuccess(OAuthToken('', DateTime(0), '', DateTime(0), []));
+      }
+      return AuthFailure(AuthError.unknown('사용자 정보 조회 실패'));
+    } catch (error) {
+      return AuthFailure(AuthError.unknown(error.toString()));
+    }
   }
 
   // 로그아웃

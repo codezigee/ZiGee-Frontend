@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/features/auth/login_screen.dart';
+import 'package:zigee_app/features/auth/models/auth_provider.dart';
 import 'package:zigee_app/features/booking/room_search_screen.dart';
 import 'package:zigee_app/features/booking/available_room_list_screen.dart';
 import 'package:zigee_app/features/my_booking/my_booking_screen.dart';
 import 'package:zigee_app/features/settings/setting_screen.dart';
 
 abstract class AppRoutes {
-  static const initial = '/login';
+  static const login = '/login';
   static const booking = '/booking';
   static const roomList = '/room-list';
   static const myBooking = '/my-booking';
@@ -30,7 +32,7 @@ final goRouter = GoRouter(
   // initialLocation: AppRoutes.initial,
   routes: [
     GoRoute(
-      path: AppRoutes.initial,
+      path: AppRoutes.login,
       builder: (context, state) => const LoginScreen(),
     ),
     StatefulShellRoute.indexedStack(
@@ -113,4 +115,21 @@ final goRouter = GoRouter(
       },
     ),
   ],
+  redirect: (context, state) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final isLoggedIn = authProvider.isAuthenticated;
+    final isLoggingIn = state.matchedLocation == AppRoutes.login;
+
+    // 로그인 ❌ + 현재 로그인 화면 ❌ -> 로그인 화면으로
+    if (!isLoggedIn && !isLoggingIn) {
+      return AppRoutes.login;
+    }
+
+    // 로그인 🅾️ + 현재 로그인 화면 🅾️ -> 홈 화면(MyBookingScreen)으로
+    if (isLoggedIn && isLoggingIn) {
+      return AppRoutes.home;
+    }
+
+    return null;
+  },
 );
