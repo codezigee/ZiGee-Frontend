@@ -139,30 +139,6 @@ class KakaoService {
     return await _storage.read(key: _refreshTokenKey);
   }
 
-  // 액세스 토큰 유효성 검사
-  Future<bool> validateAccessToken() async {
-    final token = await getAccessToken();
-    if (token == null) return false;
-
-    try {
-      final parts = token.split('.');
-      if (parts.length != 3) return false;
-
-      final payload = parts[1];
-      final normalized = base64Url.normalize(payload);
-      final decoded = utf8.decode(base64Url.decode(normalized));
-      final payloadMap = json.decode(decoded);
-
-      final exp = payloadMap['exp'];
-      if (exp == null) return false;
-
-      final expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
-      return DateTime.now().isBefore(expiryDate);
-    } catch (error) {
-      return false;
-    }
-  }
-
   // 액세스 토큰 갱신
   Future<AuthResult> refreshAccessToken() async {
     try {
