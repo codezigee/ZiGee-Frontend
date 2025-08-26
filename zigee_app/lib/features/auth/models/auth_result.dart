@@ -4,6 +4,8 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 sealed class AuthResult {}
 
 class AuthSuccess extends AuthResult {
+  // TODO: - OAuthToken 대신 AppToken으로 변경 필요(서버에서 발급한 JWT 형식으로)
+  // 현재는 카카오 OAuthToken을 임시로 사용중
   final OAuthToken token;
   AuthSuccess(this.token) {
     debugPrint('[로그인 성공]');
@@ -29,6 +31,7 @@ enum AuthErrorType {
   permissionDenied('권한 거부'),
   tokenExpired('토큰 만료'),
   notInstalled('미설치'),
+  invalidResponse('잘못된 응답'),
   unknown('알 수 없는 오류');
 
   const AuthErrorType(this.displayName);
@@ -86,6 +89,13 @@ class AuthError {
       type: AuthErrorType.notInstalled,
       message: '카카오톡이 설치되어 있지 않습니다.',
       details: details,
+    );
+  }
+
+  factory AuthError.invalidResponse([String? details]) {
+    return AuthError(
+      message: '응답 구조가 올바르지 않습니다.',
+      type: AuthErrorType.invalidResponse,
     );
   }
 
