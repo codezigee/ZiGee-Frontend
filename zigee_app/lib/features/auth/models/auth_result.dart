@@ -1,0 +1,109 @@
+import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+
+sealed class AuthResult {}
+
+class AuthSuccess extends AuthResult {
+  // TODO: - OAuthToken 대신 AppToken으로 변경 필요(서버에서 발급한 JWT 형식으로)
+  // 현재는 카카오 OAuthToken을 임시로 사용중
+  final OAuthToken token;
+  AuthSuccess(this.token) {
+    debugPrint('[로그인 성공]');
+  }
+}
+
+class AuthFailure extends AuthResult {
+  final AuthError error;
+  AuthFailure(this.error) {
+    debugPrint('[로그인 실패] ${error.message}');
+  }
+}
+
+class AuthCancelled extends AuthResult {
+  AuthCancelled() {
+    debugPrint('[로그인 취소]');
+  }
+}
+
+enum AuthErrorType {
+  networkError('네트워크 오류'),
+  serverError('서버 오류'),
+  permissionDenied('권한 거부'),
+  tokenExpired('토큰 만료'),
+  notInstalled('미설치'),
+  invalidResponse('잘못된 응답'),
+  unknown('알 수 없는 오류');
+
+  const AuthErrorType(this.displayName);
+  final String displayName;
+}
+
+class AuthError {
+  final AuthErrorType type;
+  final String message;
+  final String? details;
+  final int? statusCode;
+
+  AuthError({
+    required this.type,
+    required this.message,
+    this.details,
+    this.statusCode,
+  });
+
+  factory AuthError.networkError([String? details]) {
+    return AuthError(
+      type: AuthErrorType.networkError,
+      message: '네트워크 연결을 확인해주세요.',
+      details: details,
+    );
+  }
+
+  factory AuthError.serverError(int statusCode, [String? details]) {
+    return AuthError(
+      type: AuthErrorType.serverError,
+      message: '서버에 일시적인 문제가 발생했습니다.',
+      details: details,
+      statusCode: statusCode,
+    );
+  }
+
+  factory AuthError.permissionDenied([String? details]) {
+    return AuthError(
+      type: AuthErrorType.permissionDenied,
+      message: '권한이 거부되었습니다.',
+      details: details,
+    );
+  }
+
+  factory AuthError.tokenExpired([String? details]) {
+    return AuthError(
+      type: AuthErrorType.tokenExpired,
+      message: '인증 토큰이 만료되었습니다. 다시 로그인해주세요.',
+      details: details,
+    );
+  }
+
+  factory AuthError.notInstalled([String? details]) {
+    return AuthError(
+      type: AuthErrorType.notInstalled,
+      message: '카카오톡이 설치되어 있지 않습니다.',
+      details: details,
+    );
+  }
+
+  factory AuthError.invalidResponse([String? details]) {
+    return AuthError(
+      message: '응답 구조가 올바르지 않습니다.',
+      type: AuthErrorType.invalidResponse,
+    );
+  }
+
+  factory AuthError.unknown([String? details]) {
+    return AuthError(
+      type: AuthErrorType.unknown,
+      message: '알 수 없는 오류가 발생했습니다.',
+      details: details,
+    );
+  }
+}

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:zigee_app/common/widgets/custom_bottom_sheet.dart';
 
 void main() {
   testWidgets('CustomBottomSheet.show가 호출되고, 정상적으로 닫힌다.', (tester) async {
     await tester.pumpWidget(
-      GetMaterialApp(
+      MaterialApp(
         home: Builder(
           builder:
               (context) => Scaffold(

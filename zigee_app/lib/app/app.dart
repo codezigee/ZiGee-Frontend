@@ -1,95 +1,98 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:zigee_app/app/routes/app_routes.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
+import 'package:provider/provider.dart';
+import 'package:zigee_app/features/auth/login_screen.dart';
+import 'package:zigee_app/features/auth/models/auth_provider.dart';
+import 'package:zigee_app/features/my_booking/my_booking_screen.dart';
 
 class ZigeeApp extends StatelessWidget {
   const ZigeeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // return GetMaterialApp(
-    return MaterialApp.router(
-      title: 'zigee',
-      // initialRoute: AppRoutes.main,
-      // initialRoute: AppRoutes.initial,
-      routerConfig: goRouter,
-      theme: ThemeData(
-        fontFamily: 'Pretendard',
-        scaffoldBackgroundColor: ColorTokens.backgroundPrimary,
-        primaryColor: ColorTokens.gray900,
-        colorScheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: ColorTokens.gray900,
-          onPrimary: ColorTokens.white,
-          secondary: ColorTokens.gray600,
-          onSecondary: ColorTokens.white,
-          error: ColorTokens.red,
-          onError: ColorTokens.white,
-          surface: ColorTokens.backgroundSecondary,
-          onSurface: ColorTokens.textPrimary,
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: ColorTokens.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: ColorTokens.borderPrimary),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
+      child: MaterialApp.router(
+        title: 'zigee',
+        routerConfig: goRouter,
+        theme: ThemeData(
+          fontFamily: 'Pretendard',
+          scaffoldBackgroundColor: ColorTokens.backgroundPrimary,
+          primaryColor: ColorTokens.gray900,
+          colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: ColorTokens.gray900,
+            onPrimary: ColorTokens.white,
+            secondary: ColorTokens.gray600,
+            onSecondary: ColorTokens.white,
+            error: ColorTokens.red,
+            onError: ColorTokens.white,
+            surface: ColorTokens.backgroundSecondary,
+            onSurface: ColorTokens.textPrimary,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: ColorTokens.borderPrimary),
+          inputDecorationTheme: InputDecorationTheme(
+            filled: true,
+            fillColor: ColorTokens.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: ColorTokens.borderPrimary),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: ColorTokens.borderPrimary),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(
+                color: ColorTokens.borderFocus,
+                width: 2,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: ColorTokens.borderError),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: ColorTokens.borderSecondary),
+            ),
+            hintStyle: const TextStyle(color: ColorTokens.textPlaceholder),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorTokens.borderFocus,
-              width: 2,
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(color: ColorTokens.textPrimary),
+            bodyMedium: TextStyle(color: ColorTokens.textSecondary),
+            bodySmall: TextStyle(color: ColorTokens.textTertiary),
+            labelLarge: TextStyle(color: ColorTokens.textSecondary),
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: ColorTokens.backgroundPrimary,
+            elevation: 0,
+            iconTheme: IconThemeData(color: ColorTokens.gray900),
+            titleTextStyle: TextStyle(
+              color: ColorTokens.gray900,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
           ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: ColorTokens.borderError),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: ColorTokens.borderSecondary),
-          ),
-          hintStyle: const TextStyle(color: ColorTokens.textPlaceholder),
-        ),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: ColorTokens.textPrimary),
-          bodyMedium: TextStyle(color: ColorTokens.textSecondary),
-          bodySmall: TextStyle(color: ColorTokens.textTertiary),
-          labelLarge: TextStyle(color: ColorTokens.textSecondary),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: ColorTokens.backgroundPrimary,
-          elevation: 0,
-          iconTheme: IconThemeData(color: ColorTokens.gray900),
-          titleTextStyle: TextStyle(
-            color: ColorTokens.gray900,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+          dividerColor: Colors.transparent,
+          iconTheme: const IconThemeData(color: ColorTokens.gray700),
+          disabledColor: ColorTokens.textDisabled,
+          cardColor: ColorTokens.backgroundSecondary,
+          snackBarTheme: SnackBarThemeData(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide.none,
+            ),
+            contentTextStyle: const TextStyle(color: ColorTokens.black),
+            behavior: SnackBarBehavior.floating,
           ),
         ),
-        dividerColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: ColorTokens.gray700),
-        disabledColor: ColorTokens.textDisabled,
-        cardColor: ColorTokens.backgroundSecondary,
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide.none,
-          ),
-          contentTextStyle: const TextStyle(color: ColorTokens.black),
-          behavior: SnackBarBehavior.floating,
-        ),
+        // getPages: AppPages.pages,
+        debugShowCheckedModeBanner: false,
       ),
-      // getPages: AppPages.pages,
-      debugShowCheckedModeBanner: false,
     );
   }
 }

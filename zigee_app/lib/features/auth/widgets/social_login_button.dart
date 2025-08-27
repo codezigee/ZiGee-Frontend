@@ -9,7 +9,7 @@ class SocialLoginButton extends StatelessWidget {
   final String text;
   final String assetPath;
   final Color backgroundColor;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final TextStyle textStyle;
   final ButtonStyle? buttonStyle;
 
@@ -17,7 +17,7 @@ class SocialLoginButton extends StatelessWidget {
     required this.text,
     required this.assetPath,
     required this.backgroundColor,
-    required this.onPressed,
+    this.onPressed,
     required this.textStyle,
     this.buttonStyle,
     super.key,
