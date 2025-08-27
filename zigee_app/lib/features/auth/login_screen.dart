@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           error: error,
           onRetry: () {
-            Navigator.of(context).pop();
+            context.pop();
             _handleKakaoLogin();
           },
         );
@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           error: error,
           onRetry: () {
-            Navigator.of(context).pop();
+            context.pop();
             _handleKakaoLogin();
           },
         );
