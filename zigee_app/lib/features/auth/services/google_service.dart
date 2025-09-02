@@ -1,27 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:zigee_app/features/auth/models/auth_provider_type.dart';
 import 'package:zigee_app/features/auth/models/auth_result.dart';
-import 'package:zigee_app/features/auth/models/auth_token.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 import 'package:dio/dio.dart';
 import 'dart:convert';
 
-// TODO: - 하드코딩된 expireAt 값 수정 필요
+import 'package:zigee_app/features/auth/models/auth_token.dart';
 
-class KakaoService {
+class GoogleService {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   late final Dio _dio;
+  late final GoogleSignIn _googleSignIn;
 
   static const String _accessTokenKey = 'jwt_access_token_key';
   static const String _refreshTokenKey = 'jwt_refresh_token_key';
   static const String _baseUrl = 'https://zigee.api.baseurl';
 
-  KakaoService() {
-    _dio = Dio(BaseOptions(baseUrl: _baseUrl)); // Dio 인스턴스 초기화 (baseUrl 설정)
+  GoogleService() {
+    _dio = Dio(BaseOptions(baseUrl: _baseUrl));
+    _googleSignIn = GoogleSignIn.instance;
     _setupInterceptors();
+    _initializeGoogleSignIn();
+  }
+
+  Future<void> _initializeGoogleSignIn() async {
+    try {
+      await _googleSignIn.initialize(
+        clientId:
+            '739205439502-51tde7gh23ii3sc7jhrd1tbtqc841hu7.apps.googleusercontent.com',
+      );
+    } catch (e) {
+      debugPrint('Google Sign-In 초기화 실패: $e');
+    }
   }
 
   // JWT 토큰 자동 관리를 위한 Dio 인터셉터 설정
@@ -64,100 +77,66 @@ class KakaoService {
     );
   }
 
-  // 카카오톡 설치 여부 확인 후 로그인 시도
-  Future<AuthResult> loginWithKakao() async {
+  // 구글 로그인 시도
+  Future<AuthResult> loginWithGoogle() async {
     try {
-      final isKakaoTalkAvailable = await isKakaoTalkInstalled();
-      AuthResult kakaoResult;
+      final GoogleSignInAccount googleAccount =
+          await _googleSignIn.authenticate();
+      final GoogleSignInAuthentication googleAuth =
+          googleAccount.authentication;
 
-      if (isKakaoTalkAvailable) {
-        kakaoResult = await loginWithKakaoTalk();
-      } else {
-        kakaoResult = await loginWithKakaoAccount();
+      if (googleAuth.idToken == null) {
+        return AuthFailure(AuthError.unknown('구글 ID 토큰을 가져올 수 없음'));
       }
 
-      if (kakaoResult is AuthSuccess) {
-        return await exchangeKakaoToken(kakaoResult.token);
-      } else {
-        return kakaoResult;
-      }
+      return await exchangeGoogleToken(googleAuth.idToken!);
     } catch (error) {
-      return AuthFailure(AuthError.unknown(error.toString()));
-    }
-  }
-
-  // 카카오톡 앱 로그인
-  Future<AuthResult> loginWithKakaoTalk() async {
-    try {
-      OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-      AuthToken authToken = AuthToken(
-        accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
-        expireAt: DateTime.now().add(const Duration(hours: 1)),
-      );
-      return AuthSuccess(
-        token: authToken,
-        providerType: AuthProviderType.kakao,
-      );
-    } catch (error) {
-      if (error is PlatformException) {
+      if (error is GoogleSignInException) {
         switch (error.code) {
-          case 'CANCELED':
+          case GoogleSignInExceptionCode.canceled:
             return AuthCancelled();
-          case 'NOT_INSTALLED':
-            return AuthFailure(AuthError.notInstalled(error.message));
-          case 'NETWORK_ERROR':
-            return AuthFailure(AuthError.networkError(error.message));
-          case 'TOKEN_EXPIRED':
-            return AuthFailure(AuthError.tokenExpired(error.message));
-          case 'PERMISSION_DENIED':
-            return AuthFailure(AuthError.permissionDenied(error.message));
+          case GoogleSignInExceptionCode.clientConfigurationError:
+            return AuthFailure(AuthError.unknown('클라이언트  설정 오류'));
+          case GoogleSignInExceptionCode.providerConfigurationError:
+            return AuthFailure(AuthError.serverError(500, '서비스 설정 오류'));
+          case GoogleSignInExceptionCode.uiUnavailable:
+            return AuthFailure(AuthError.unknown('UI를 표시할 수 없음'));
+          case GoogleSignInExceptionCode.userMismatch:
+            return AuthFailure(AuthError.unknown('사용자 불일치'));
+          case GoogleSignInExceptionCode.interrupted:
+            return AuthFailure(AuthError.unknown('로그인이 중단됨'));
           default:
-            break;
+            return AuthFailure(
+              AuthError.unknown(error.description ?? '알 수 없는 구글 로그인 오류'),
+            );
         }
       }
-      return AuthFailure(AuthError.unknown(error.toString()));
-    }
-  }
 
-  // 카카오톡 계정 로그인(웹뷰)
-  Future<AuthResult> loginWithKakaoAccount() async {
-    try {
-      OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-      AuthToken authToken = AuthToken(
-        accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
-        expireAt: DateTime.now().add(const Duration(hours: 1)),
-      );
-      return AuthSuccess(
-        token: authToken,
-        providerType: AuthProviderType.kakao,
-      );
-    } catch (error) {
       if (error is PlatformException) {
         switch (error.code) {
-          case 'CANCELED':
+          case 'sign_in_canceled':
             return AuthCancelled();
-          case 'NETWORK_ERROR':
+          case 'network_error':
             return AuthFailure(AuthError.networkError(error.message));
-          case 'TOKEN_EXPIRED':
-            return AuthFailure(AuthError.tokenExpired(error.message));
-          case 'PERMISSION_DENIED':
-            return AuthFailure(AuthError.permissionDenied(error.message));
+          case 'sign_in_failed':
+            return AuthFailure(AuthError.unknown(error.message ?? '구글 로그인 실패'));
           default:
-            break;
+            return AuthFailure(
+              AuthError.unknown(error.message ?? '알 수 없는 구글 로그인 오류'),
+            );
         }
       }
+
       return AuthFailure(AuthError.unknown(error.toString()));
     }
   }
 
-  // 카카오 토큰을 백엔드 서버로 보내 JWT 토큰 발급 요청
-  Future<AuthResult> exchangeKakaoToken(AuthToken token) async {
+  // 구글 토큰을 백엔드 서버로 보내 JWT 토큰 발급 요청
+  Future<AuthResult> exchangeGoogleToken(String idToken) async {
     try {
       final response = await _dio.post(
-        '/api/auth/login',
-        data: {'access_token': token.accessToken},
+        '/api/auth/google/login',
+        data: {'id_token': idToken},
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
@@ -173,13 +152,14 @@ class KakaoService {
         }
 
         await storeJWT(newAccessToken, newRefreshToken);
+        final expireAt = DateTime.now().add(const Duration(hours: 1));
         return AuthSuccess(
           token: AuthToken(
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
-            expireAt: DateTime.now().add(const Duration(hours: 1)),
+            expireAt: expireAt,
           ),
-          providerType: AuthProviderType.kakao,
+          providerType: AuthProviderType.google,
         );
       }
 
@@ -235,14 +215,14 @@ class KakaoService {
 
         await storeJWT(newAccessToken, newRefreshToken);
 
-        final dummyToken = AuthToken(
-          accessToken: newAccessToken,
-          refreshToken: newRefreshToken,
-          expireAt: DateTime.now().add(const Duration(hours: 1)),
-        );
+        final expireAt = DateTime.now().add(const Duration(hours: 1));
         return AuthSuccess(
-          token: dummyToken,
-          providerType: AuthProviderType.kakao,
+          token: AuthToken(
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+            expireAt: expireAt,
+          ),
+          providerType: AuthProviderType.google,
         );
       }
 
@@ -272,8 +252,8 @@ class KakaoService {
       if (response.statusCode == 200) {
         return AuthSuccess(
           token: AuthToken(accessToken: '', expireAt: DateTime.now()),
-          providerType: AuthProviderType.kakao,
-        );
+          providerType: AuthProviderType.google,
+        ); // 수정
       }
 
       return AuthFailure(AuthError.unknown('사용자 정보 조회 실패'));
@@ -282,18 +262,5 @@ class KakaoService {
     }
   }
 
-  // 로그아웃
-  Future<AuthResult> logout() async {
-    try {
-      await UserApi.instance.logout();
-      await clearTokens();
-
-      return AuthSuccess(
-        token: AuthToken(accessToken: '', expireAt: DateTime(0)),
-        providerType: AuthProviderType.kakao,
-      );
-    } catch (error) {
-      return AuthFailure(AuthError.unknown(error.toString()));
-    }
-  }
+  // TODO: - 로그아웃 기능 구현
 }

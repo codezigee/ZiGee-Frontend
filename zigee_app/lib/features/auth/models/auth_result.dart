@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:zigee_app/features/auth/models/auth_provider_type.dart';
+import 'package:zigee_app/features/auth/models/auth_token.dart';
 
 sealed class AuthResult {}
 
 class AuthSuccess extends AuthResult {
-  // TODO: - OAuthToken 대신 AppToken으로 변경 필요(서버에서 발급한 JWT 형식으로)
-  // 현재는 카카오 OAuthToken을 임시로 사용중
-  final OAuthToken token;
-  AuthSuccess(this.token) {
-    debugPrint('[로그인 성공]');
-  }
+  final AuthToken token;
+  final AuthProviderType providerType;
+
+  AuthSuccess({required this.token, required this.providerType});
 }
 
 class AuthFailure extends AuthResult {
   final AuthError error;
-  AuthFailure(this.error) {
-    debugPrint('[로그인 실패] ${error.message}');
-  }
+
+  AuthFailure(this.error);
 }
 
 class AuthCancelled extends AuthResult {
-  AuthCancelled() {
-    debugPrint('[로그인 취소]');
-  }
+  AuthCancelled();
 }
 
 enum AuthErrorType {
@@ -87,7 +84,7 @@ class AuthError {
   factory AuthError.notInstalled([String? details]) {
     return AuthError(
       type: AuthErrorType.notInstalled,
-      message: '카카오톡이 설치되어 있지 않습니다.',
+      message: '앱이 설치되어 있지 않습니다.',
       details: details,
     );
   }
