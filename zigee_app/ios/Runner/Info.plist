@@ -30,6 +30,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakao65649053097626958171b85d2ad5251e</string>
+				<string>com.googleusercontent.apps.739205439502-51tde7gh23ii3sc7jhrd1tbtqc841hu7</string>
 			</array>
 		</dict>
 	</array>
@@ -65,5 +66,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>GIDClientID</key>
+	<string>739205439502-51tde7gh23ii3sc7jhrd1tbtqc841hu7.apps.googleusercontent.com</string>
 </dict>
 </plist>
