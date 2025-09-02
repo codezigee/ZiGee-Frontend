@@ -14,6 +14,7 @@ import 'package:zigee_app/common/widgets/retry_dialog.dart';
 import 'package:zigee_app/common/widgets/error_bottom_sheet.dart';
 import 'package:zigee_app/features/auth/models/auth_result.dart';
 import 'package:zigee_app/features/auth/services/kakao_service.dart';
+import 'package:zigee_app/features/auth/services/google_service.dart';
 import 'package:zigee_app/features/auth/widgets/social_login_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,7 +25,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _isLoading = false;
+  bool _isKakaoLoginLoading = false;
+  bool _isGoogleLoginLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +64,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           assetPath: 'assets/images/kakao_logo.png',
                           backgroundColor: const Color(0xFFFEE500),
                           onPressed:
-                              _isLoading ? null : () => _handleKakaoLogin(),
+                              _isKakaoLoginLoading
+                                  ? null
+                                  : () => _handleKakaoLogin(),
                           textStyle: AppTextStyles.labelLarge.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        if (_isLoading)
+                        if (_isKakaoLoginLoading)
                           Positioned.fill(
                             child: Container(
                               decoration: BoxDecoration(
-                                color: ColorTokens.borderFocus,
+                                color: ColorTokens.buttonPressed.withValues(
+                                  alpha: 0.1,
+                                ),
                                 borderRadius: BorderRadius.circular(
                                   SizingTokens.radiusMd,
                                 ),
@@ -85,14 +91,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: SpacingTokens.sm),
 
                     // 2. 구글 로그인
-                    SocialLoginButton(
-                      text: 'Google 로그인',
-                      assetPath: 'assets/images/google_logo.png',
-                      backgroundColor: const Color(0xFFF2F2F2),
-                      onPressed: () => debugPrint('구글 로그인'),
-                      textStyle: AppTextStyles.labelLarge.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Stack(
+                      children: [
+                        SocialLoginButton(
+                          text: 'Google 로그인',
+                          assetPath: 'assets/images/google_logo.png',
+                          backgroundColor: const Color(0xFFF2F2F2),
+                          onPressed:
+                              _isGoogleLoginLoading
+                                  ? null
+                                  : () => _handleGoogleLogin(),
+                          textStyle: AppTextStyles.labelLarge.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (_isGoogleLoginLoading)
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: ColorTokens.buttonPressed.withValues(
+                                  alpha: 0.1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  SizingTokens.radiusMd,
+                                ),
+                              ),
+                              child: const CustomLoadingIndicator(),
+                            ),
+                          ),
+                      ],
                     ),
 
                     const SizedBox(height: SpacingTokens.sm),
@@ -119,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleKakaoLogin() async {
-    setState(() => _isLoading = true);
+    setState(() => _isKakaoLoginLoading = true);
 
     try {
       final authResult = await KakaoService().loginWithKakao();
@@ -136,7 +163,30 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } finally {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() => _isKakaoLoginLoading = false);
+      }
+    }
+  }
+
+  Future<void> _handleGoogleLogin() async {
+    setState(() => _isGoogleLoginLoading = true);
+
+    try {
+      final authResult = await GoogleService().loginWithGoogle();
+
+      if (!mounted) return;
+
+      switch (authResult) {
+        case AuthSuccess():
+          context.push(AppRoutes.myBooking);
+        case AuthFailure(error: final authError):
+          await _handleAuthError(authError);
+        case AuthCancelled():
+          break;
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isGoogleLoginLoading = false);
       }
     }
   }
