@@ -9,3 +9,6 @@ class AuthToken {
     required this.expireAt,
   });
 }
+
+// TODO: - accessToken, refreshToken 만료일 각각 추가
+// TODO: - Scpoes 추가
