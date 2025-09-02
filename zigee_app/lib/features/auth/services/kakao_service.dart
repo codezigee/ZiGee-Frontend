@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:zigee_app/features/auth/models/auth_provider_type.dart';
 import 'package:zigee_app/features/auth/models/auth_result.dart';
+import 'package:zigee_app/features/auth/models/auth_token.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 import 'package:dio/dio.dart';
 import 'dart:convert';
+
+// TODO: - 하드코딩된 expireAt 값 수정 필요
 
 class KakaoService {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
@@ -86,7 +90,15 @@ class KakaoService {
   Future<AuthResult> loginWithKakaoTalk() async {
     try {
       OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-      return AuthSuccess(token);
+      AuthToken authToken = AuthToken(
+        accessToken: token.accessToken,
+        refreshToken: token.refreshToken,
+        expireAt: DateTime.now().add(const Duration(hours: 1)),
+      );
+      return AuthSuccess(
+        token: authToken,
+        providerType: AuthProviderType.kakao,
+      );
     } catch (error) {
       if (error is PlatformException) {
         switch (error.code) {
@@ -112,7 +124,15 @@ class KakaoService {
   Future<AuthResult> loginWithKakaoAccount() async {
     try {
       OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-      return AuthSuccess(token);
+      AuthToken authToken = AuthToken(
+        accessToken: token.accessToken,
+        refreshToken: token.refreshToken,
+        expireAt: DateTime.now().add(const Duration(hours: 1)),
+      );
+      return AuthSuccess(
+        token: authToken,
+        providerType: AuthProviderType.kakao,
+      );
     } catch (error) {
       if (error is PlatformException) {
         switch (error.code) {
@@ -133,11 +153,11 @@ class KakaoService {
   }
 
   // 카카오 토큰을 백엔드 서버로 보내 JWT 토큰 발급 요청
-  Future<AuthResult> exchangeKakaoToken(OAuthToken kakaoToken) async {
+  Future<AuthResult> exchangeKakaoToken(AuthToken token) async {
     try {
       final response = await _dio.post(
         '/api/auth/login',
-        data: {'access_token': kakaoToken.accessToken},
+        data: {'access_token': token.accessToken},
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
@@ -153,7 +173,14 @@ class KakaoService {
         }
 
         await storeJWT(newAccessToken, newRefreshToken);
-        return AuthSuccess(kakaoToken);
+        return AuthSuccess(
+          token: AuthToken(
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+            expireAt: DateTime.now().add(const Duration(hours: 1)),
+          ),
+          providerType: AuthProviderType.kakao,
+        );
       }
 
       if (statusCode == 401) {
@@ -208,14 +235,15 @@ class KakaoService {
 
         await storeJWT(newAccessToken, newRefreshToken);
 
-        final dummyToken = OAuthToken(
-          newAccessToken,
-          DateTime(0, 6),
-          newRefreshToken,
-          DateTime(0, 6),
-          [],
+        final dummyToken = AuthToken(
+          accessToken: newAccessToken,
+          refreshToken: newRefreshToken,
+          expireAt: DateTime.now().add(const Duration(hours: 1)),
         );
-        return AuthSuccess(dummyToken);
+        return AuthSuccess(
+          token: dummyToken,
+          providerType: AuthProviderType.kakao,
+        );
       }
 
       if (statusCode == 401) {
@@ -242,7 +270,10 @@ class KakaoService {
     try {
       final response = await _dio.get('/api/members/1');
       if (response.statusCode == 200) {
-        return AuthSuccess(OAuthToken('', DateTime(0), '', DateTime(0), []));
+        return AuthSuccess(
+          token: AuthToken(accessToken: '', expireAt: DateTime.now()),
+          providerType: AuthProviderType.kakao,
+        );
       }
 
       return AuthFailure(AuthError.unknown('사용자 정보 조회 실패'));
@@ -257,8 +288,10 @@ class KakaoService {
       await UserApi.instance.logout();
       await clearTokens();
 
-      final emptyToken = OAuthToken('', DateTime(0), '', DateTime(0), []);
-      return AuthSuccess(emptyToken);
+      return AuthSuccess(
+        token: AuthToken(accessToken: '', expireAt: DateTime(0)),
+        providerType: AuthProviderType.kakao,
+      );
     } catch (error) {
       return AuthFailure(AuthError.unknown(error.toString()));
     }
