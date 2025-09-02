@@ -1,1 +1,1 @@
-enum AuthProviderType { kakao, google, apple, naver }
+enum AuthProviderType { none, kakao, google, apple, naver }
