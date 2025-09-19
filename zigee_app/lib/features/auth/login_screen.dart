@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:zigee_app/app/routes/app_routes.dart';
 import 'package:zigee_app/app/theme/color_tokens.dart';
 import 'package:zigee_app/app/theme/size_tokens.dart';
@@ -102,7 +103,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: 'Apple 로그인',
                       assetPath: 'assets/images/apple_logo.png',
                       backgroundColor: Colors.white,
-                      onPressed: () => debugPrint('애플 로그인'),
+                      onPressed: () async {
+                        try {
+                          final credential =
+                              await SignInWithApple.getAppleIDCredential(
+                                scopes: [
+                                  AppleIDAuthorizationScopes.email,
+                                  AppleIDAuthorizationScopes.fullName,
+                                ],
+                                webAuthenticationOptions:
+                                    WebAuthenticationOptions(
+                                      clientId: 'zigeeApp.example.com',
+                                      redirectUri: Uri.parse(
+                                        'https://zigeeapp.store/oauth',
+                                      ),
+                                    ),
+
+                                nonce: 'example-nonce',
+                                state: 'example-state',
+                              );
+
+                          debugPrint('[애플 로그인] email: ${credential.email}');
+                          debugPrint(
+                            '[애플 로그인] name: ${credential.familyName} ${credential.givenName}',
+                          );
+                        } on SignInWithAppleAuthorizationException catch (e) {
+                          if (e.code == AuthorizationErrorCode.canceled) {
+                            debugPrint('[애플 로그인] 사용자가 로그인을 취소했습니다.');
+                          } else {
+                            debugPrint('[애플 로그인] 에러: ${e.message}');
+                          }
+                        } catch (e) {
+                          debugPrint('[애플 로그인] 알 수 없는 에러: $e');
+                        }
+                      },
                       textStyle: AppTextStyles.labelLarge.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
